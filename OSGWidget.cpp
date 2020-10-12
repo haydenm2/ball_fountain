@@ -78,7 +78,7 @@ OSGWidget::OSGWidget( QWidget* parent, Qt::WindowFlags flags ):
 
     osg::ref_ptr<osgGA::TrackballManipulator> manipulator = new osgGA::TrackballManipulator;
     manipulator->setAllowThrow( false );
-    manipulator->setHomePosition(osg::Vec3d(0.0,-20.0,3.0),osg::Vec3d(0,0,5.0f),osg::Vec3d(0,0,1));
+    manipulator->setHomePosition(osg::Vec3d(0.0,-20.0,20.0),osg::Vec3d(0,0,5.0f),osg::Vec3d(0,0,1));
     mView->setCameraManipulator( manipulator );
 
     mViewer->addView( mView );
