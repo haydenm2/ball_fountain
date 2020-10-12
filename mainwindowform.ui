@@ -18,7 +18,7 @@
     <item>
      <layout class="QVBoxLayout" name="verticalLayout_26">
       <item>
-       <widget class="QGraphicsView" name="graphicsView"/>
+       <widget class="OSGWidget" name="graphicsView"/>
       </item>
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_34">
@@ -383,69 +383,6 @@
        </widget>
       </item>
       <item>
-       <spacer name="verticalSpacer_5">
-        <property name="orientation">
-         <enum>Qt::Vertical</enum>
-        </property>
-        <property name="sizeHint" stdset="0">
-         <size>
-          <width>20</width>
-          <height>40</height>
-         </size>
-        </property>
-       </spacer>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_32">
-        <item>
-         <spacer name="horizontalSpacer_14">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_7">
-          <property name="text">
-           <string>Ball Spread</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_15">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <widget class="QSlider" name="horizontalSlider_7">
-        <property name="maximum">
-         <number>45</number>
-        </property>
-        <property name="value">
-         <number>5</number>
-        </property>
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </widget>
-      </item>
-      <item>
        <spacer name="verticalSpacer_9">
         <property name="orientation">
          <enum>Qt::Vertical</enum>
@@ -476,7 +413,7 @@
         <item>
          <widget class="QLabel" name="label_8">
           <property name="text">
-           <string>Ball Count</string>
+           <string>Max Ball Count</string>
           </property>
          </widget>
         </item>
@@ -682,6 +619,13 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>OSGWidget</class>
+   <extends>QGraphicsView</extends>
+   <header>OSGWidget.hpp</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>
