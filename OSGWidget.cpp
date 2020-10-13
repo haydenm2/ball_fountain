@@ -31,21 +31,20 @@ public:
 
     virtual void operator()(osg::Node* node, osg::NodeVisitor* nv)
     {
-        mCount++;
+        animationFrame++;
 
-        osg::Vec3d position(0.0, 0.0, mScaleStep*mCount);
+        osg::Vec3d positionOfBall(0.0, 0.0, animationScaleStep*animationFrame);
         osg::PositionAttitudeTransform *pat = dynamic_cast<osg::PositionAttitudeTransform *> (node);
-        pat->setPosition(position);
+        pat->setPosition(positionOfBall);
 
         traverse(node, nv);
 
-        if(mCount>=20)
-            mCount=0;
+        if(animationFrame>=20)
+            animationFrame=0;
     }
 protected:
-    bool mUp{true};
-    unsigned int mCount{0};
-    double mScaleStep{1.0/1.0};
+    unsigned int animationFrame{0};
+    double animationScaleStep{1.0/1.0};
 };
 
 
@@ -86,64 +85,64 @@ OSGWidget::OSGWidget( QWidget* parent, Qt::WindowFlags flags ):
     mViewer->realize();
     mView->home();
 
-    osg::Sphere* sphere    = new osg::Sphere( osg::Vec3( 0.f, 0.f, 1.f ), 2.0f );
-    osg::ShapeDrawable* sd = new osg::ShapeDrawable( sphere );
-    sd->setColor( osg::Vec4( 0.f, 0.f, 1.f, 1.f ) );
-    sd->setName( "Sphere" );
-    osg::Geode* geode = new osg::Geode;
-    geode->addDrawable( sd );
-    osg::StateSet* stateSet = geode->getOrCreateStateSet();
-    osg::Material* material = new osg::Material;
-    material->setColorMode( osg::Material::AMBIENT_AND_DIFFUSE );
-    stateSet->setAttributeAndModes( material, osg::StateAttribute::ON );
-    stateSet->setMode( GL_DEPTH_TEST, osg::StateAttribute::ON );
-    osg::PositionAttitudeTransform *transform = new osg::PositionAttitudeTransform;
-    transform->setPosition(osg::Vec3( 0.f, 0.f, 0.f ));
-    transform->setUpdateCallback(new SphereUpdateCallback());
-    transform->addChild(geode);
-    mRoot->addChild(transform);
+    osg::Sphere* ball = new osg::Sphere( osg::Vec3( 0.f, 0.f, 1.f ), 2.0f );
+    osg::ShapeDrawable* sdBall = new osg::ShapeDrawable( ball );
+    sdBall->setColor( osg::Vec4( 0.f, 0.f, 1.f, 1.f ) );
+    sdBall->setName( "Sphere" );
+    osg::Geode* geodeBall = new osg::Geode;
+    geodeBall->addDrawable( sdBall );
+    osg::StateSet* stateSetBall = geodeBall->getOrCreateStateSet();
+    osg::Material* materialBall = new osg::Material;
+    materialBall->setColorMode( osg::Material::AMBIENT_AND_DIFFUSE );
+    stateSetBall->setAttributeAndModes( materialBall, osg::StateAttribute::ON );
+    stateSetBall->setMode( GL_DEPTH_TEST, osg::StateAttribute::ON );
+    osg::PositionAttitudeTransform *transformBall = new osg::PositionAttitudeTransform;
+    transformBall->setPosition(osg::Vec3( 0.f, 0.f, 0.f ));
+    transformBall->setUpdateCallback(new SphereUpdateCallback());
+    transformBall->addChild(geodeBall);
+    mRoot->addChild(transformBall);
 
-    osg::Cylinder* cannon    = new osg::Cylinder( osg::Vec3( 0.f, 0.f, 2.f ), 2.0f, 4.0f );
-    osg::ShapeDrawable* sd1 = new osg::ShapeDrawable( cannon );
-    sd1->setColor( osg::Vec4( 0.5f, 0.5f, 0.5f, 1.f ) );
-    sd1->setName( "Nozzle" );
-    osg::Geode* geode1 = new osg::Geode;
-    geode1->addDrawable( sd1 );
-    osg::StateSet* stateSet1 = geode1->getOrCreateStateSet();
-    osg::Material* material1 = new osg::Material;
-    material1->setColorMode( osg::Material::AMBIENT_AND_DIFFUSE );
-    stateSet1->setAttributeAndModes( material1, osg::StateAttribute::ON );
-    stateSet1->setMode( GL_DEPTH_TEST, osg::StateAttribute::ON );
-    osg::PositionAttitudeTransform *transform1 = new osg::PositionAttitudeTransform;
-    transform1->setPosition(osg::Vec3( 0.f, 0.f, 0.f ));
-    transform1->addChild(geode1);
-    mRoot->addChild(transform1);
+    osg::Cylinder* nozzle = new osg::Cylinder( osg::Vec3( 0.f, 0.f, 2.f ), 2.0f, 4.0f );
+    osg::ShapeDrawable* sdNozzle = new osg::ShapeDrawable( nozzle );
+    sdNozzle->setColor( osg::Vec4( 0.5f, 0.5f, 0.5f, 1.f ) );
+    sdNozzle->setName( "Nozzle" );
+    osg::Geode* geodeNozzle = new osg::Geode;
+    geodeNozzle->addDrawable( sdNozzle );
+    osg::StateSet* stateSetNozzle = geodeNozzle->getOrCreateStateSet();
+    osg::Material* materialNozzle = new osg::Material;
+    materialNozzle->setColorMode( osg::Material::AMBIENT_AND_DIFFUSE );
+    stateSetNozzle->setAttributeAndModes( materialNozzle, osg::StateAttribute::ON );
+    stateSetNozzle->setMode( GL_DEPTH_TEST, osg::StateAttribute::ON );
+    osg::PositionAttitudeTransform *transformNozzle = new osg::PositionAttitudeTransform;
+    transformNozzle->setPosition(osg::Vec3( 0.f, 0.f, 0.f ));
+    transformNozzle->addChild(geodeNozzle);
+    mRoot->addChild(transformNozzle);
 
-    osg::ref_ptr<osg::Vec3Array> vertices = new osg::Vec3Array;
+    osg::ref_ptr<osg::Vec3Array> groundPlaneVertices = new osg::Vec3Array;
     float groundSize = 100;
-    vertices->push_back(osg::Vec3(-groundSize, -groundSize, 0.0f));
-    vertices->push_back(osg::Vec3(groundSize, -groundSize, 0.0f));
-    vertices->push_back(osg::Vec3(groundSize, groundSize, 0.0f));
-    vertices->push_back(osg::Vec3(-groundSize, groundSize, 0.0f));
-    osg::ref_ptr<osg::Vec3Array> normals = new osg::Vec3Array;
-    normals->push_back(osg::Vec3(0.0f, -1.0f, 0.0f));
-    osg::ref_ptr<osg::Vec4Array> colors = new osg::Vec4Array;
-    colors->push_back(osg::Vec4(0.04f, 0.4f, 0.14f, 0.0f));
-    osg::ref_ptr<osg::Geometry> quad = new osg::Geometry;
-    quad->setVertexArray(vertices.get());
-    quad->setNormalArray(normals.get());
-    quad->setNormalBinding(osg::Geometry::BIND_OVERALL);
-    quad->setColorArray(colors.get());
-    quad->setColorBinding(osg::Geometry::BIND_OVERALL);
-    quad->addPrimitiveSet(new osg::DrawArrays(GL_QUADS, 0, 4));
-    osg::Geode* geode2 = new osg::Geode;
-    geode2->addDrawable( quad.get() );
-    osg::StateSet* stateSet2 = geode2->getOrCreateStateSet();
-    osg::Material* material2 = new osg::Material;
-    material2->setColorMode( osg::Material::AMBIENT_AND_DIFFUSE );
-    stateSet2->setAttributeAndModes( material2, osg::StateAttribute::ON );
-    stateSet2->setMode( GL_DEPTH_TEST, osg::StateAttribute::ON );
-    mRoot->addChild(geode2);
+    groundPlaneVertices->push_back(osg::Vec3(-groundSize, -groundSize, 0.0f));
+    groundPlaneVertices->push_back(osg::Vec3(groundSize, -groundSize, 0.0f));
+    groundPlaneVertices->push_back(osg::Vec3(groundSize, groundSize, 0.0f));
+    groundPlaneVertices->push_back(osg::Vec3(-groundSize, groundSize, 0.0f));
+    osg::ref_ptr<osg::Vec3Array> groundPlaneNormals = new osg::Vec3Array;
+    groundPlaneNormals->push_back(osg::Vec3(0.0f, -1.0f, 0.0f));
+    osg::ref_ptr<osg::Vec4Array> groundColor = new osg::Vec4Array;
+    groundColor->push_back(osg::Vec4(0.04f, 0.4f, 0.14f, 0.0f));
+    osg::ref_ptr<osg::Geometry> ground = new osg::Geometry;
+    ground->setVertexArray(groundPlaneVertices.get());
+    ground->setNormalArray(groundPlaneNormals.get());
+    ground->setNormalBinding(osg::Geometry::BIND_OVERALL);
+    ground->setColorArray(groundColor.get());
+    ground->setColorBinding(osg::Geometry::BIND_OVERALL);
+    ground->addPrimitiveSet(new osg::DrawArrays(GL_QUADS, 0, 4));
+    osg::Geode* geodeGroundPlane = new osg::Geode;
+    geodeGroundPlane->addDrawable( ground.get() );
+    osg::StateSet* stateSetGround = geodeGroundPlane->getOrCreateStateSet();
+    osg::Material* materialGround = new osg::Material;
+    materialGround->setColorMode( osg::Material::AMBIENT_AND_DIFFUSE );
+    stateSetGround->setAttributeAndModes( materialGround, osg::StateAttribute::ON );
+    stateSetGround->setMode( GL_DEPTH_TEST, osg::StateAttribute::ON );
+    mRoot->addChild(geodeGroundPlane);
 
     this->setFocusPolicy( Qt::StrongFocus );
     this->setMinimumSize( 100, 100 );
