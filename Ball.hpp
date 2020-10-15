@@ -8,6 +8,7 @@
 class Ball
 {
 public:
+    Ball();
     Ball(double radius, double mass, unsigned int color, std::array<double, 3> position, std::array<double, 3> velocity, std::array<double, 3> acceleration, double coefficientOfRestitution);
     ~Ball();
     double radius{1};
