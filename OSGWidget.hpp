@@ -38,6 +38,16 @@ public:
              Qt::WindowFlags f = 0 );
 
   virtual ~OSGWidget();
+
+  osg::Camera* create_camera();
+  osg::ref_ptr<osgGA::TrackballManipulator>create_manipulator(osg::Vec3 &initialPosition, osg::Vec3 &initialPointingPosition, osg::Vec3 &upVector);
+  osgViewer::View* create_view(osg::Camera *camera, osg::ref_ptr<osgGA::TrackballManipulator> &manipulator);
+  osgViewer::CompositeViewer* create_viewer(osgViewer::View *view);
+  void add_ball(osg::Vec3 &initialBallPosition, float &ballRadius, osg::Vec4 &ballColor);
+  void add_cylinder(osg::Vec3 &initialCylinderPosition, float &cylinderRadius, float &cylinderHeight, osg::Vec4 &cylinderColor);
+  void add_ground_plane(float &groundPlaneSize, osg::Vec4 &groundColor);
+  void configure_update();
+
 protected:
   virtual void paintEvent( QPaintEvent* paintEvent );
   virtual void paintGL();
@@ -54,6 +64,7 @@ private:
   osg::ref_ptr<osgViewer::View> mView;
   osg::ref_ptr<osg::Group> mRoot;
   int mTimerId{0};
+  double mFramesPerSecond{30};
 };
 
 #endif
