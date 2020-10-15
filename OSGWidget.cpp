@@ -21,7 +21,7 @@ OSGWidget::OSGWidget(QWidget* parent, Qt::WindowFlags flags):
 
     mViewer = create_viewer(mView);
 
-    osg::Vec3 initialBallPosition{0.f, 0.f, 2.f};
+    osg::Vec3 initialBallPosition{0.f, 0.f, 4.f};
     float ballRadius{2.0f};
     osg::Vec4 ballColor{0.f, 0.f, 1.f, 1.f};
     add_ball(initialBallPosition, ballRadius, ballColor);

@@ -1,20 +1,34 @@
 cmake_minimum_required(VERSION 3.4)
 project(PhysicsFountain)
 
-FIND_PACKAGE(Qt5Widgets)
-FIND_PACKAGE(Qt5Gui)
-FIND_PACKAGE(OpenSceneGraph REQUIRED COMPONENTS osgDB osgGA osgUtil osgViewer osgText)
+find_package(Qt5Widgets)
+find_package(Qt5Gui)
+find_package(OpenSceneGraph REQUIRED COMPONENTS osgDB osgGA osgUtil osgViewer osgText)
+find_package(GTest REQUIRED)
 
-INCLUDE_DIRECTORIES( ${OPENSCENEGRAPH_INCLUDE_DIRS} )
+include_directories(${GTEST_INCLUDE_DIRS})
+include_directories( ${OPENSCENEGRAPH_INCLUDE_DIRS} )
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED 1)
-SET(CMAKE_INCLUDE_CURRENT_DIR ON)
-SET(CMAKE_AUTOMOC ON)
-SET(CMAKE_AUTOUIC ON)
-SET(CMAKE_AUTORCC ON)
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTORCC ON)
 
-SET(MYSOURCE
+set(PHYSICS_NAME BallPhysics)
+set(TEST_NAME ${PHYSICS_NAME}_UnitTest)
+
+add_library(${PHYSICS_NAME} STATIC
+        BallPhysics.hpp
+        BallPhysics.cpp
+        )
+
+add_executable(${TEST_NAME}
+    UnitTest.cpp
+    )
+
+set(GUI_SOURCE
     Main.cpp
     MainWindow.cpp
     MainWindow.hpp
@@ -26,11 +40,19 @@ SET(MYSOURCE
     )
 
 add_executable(${PROJECT_NAME}
-    ${MYSOURCE}
+    ${GUI_SOURCE}
     )
 
 target_link_libraries(${PROJECT_NAME}
     ${OPENSCENEGRAPH_LIBRARIES}
     Qt5::Widgets
     Qt5::Gui
-)
+    ${PHYSICS_NAME}
+    )
+
+target_link_libraries(${TEST_NAME}
+    ${GTEST_LIBRARIES}
+    ${GTEST_MAIN_LIBRARIES}
+    ${PHYSICS_NAME}
+    )
+
