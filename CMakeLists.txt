@@ -22,6 +22,8 @@ set(TEST_NAME ${PHYSICS_NAME}_UnitTest)
 add_library(${PHYSICS_NAME} STATIC
         BallPhysics.hpp
         BallPhysics.cpp
+        Ball.hpp
+        Ball.cpp
         )
 
 add_executable(${TEST_NAME}
