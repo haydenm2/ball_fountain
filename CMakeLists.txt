@@ -15,12 +15,14 @@ SET(CMAKE_AUTOUIC ON)
 SET(CMAKE_AUTORCC ON)
 
 SET(MYSOURCE
-    main.cpp
-    mainwindow.cpp
-    mainwindow.h
-    mainwindowform.ui
+    Main.cpp
+    MainWindow.cpp
+    MainWindow.hpp
+    MainWindowForm.ui
     OSGWidget.hpp
     OSGWidget.cpp
+    SphereUpdateCallback.cpp
+    SphereUpdateCallback.hpp
     )
 
 add_executable(${PROJECT_NAME}

@@ -1,53 +1,5 @@
 #include "OSGWidget.hpp"
 
-#include <osg/Camera>
-#include <osg/DisplaySettings>
-#include <osg/Geode>
-#include <osg/Material>
-#include <osg/Shape>
-#include <osg/ShapeDrawable>
-#include <osg/StateSet>
-#include <osgDB/WriteFile>
-#include <osgGA/EventQueue>
-#include <osgViewer/View>
-#include <osgViewer/ViewerEventHandlers>
-#include <osg/MatrixTransform>
-#include <osg/NodeVisitor>
-#include <osg/LineWidth>
-#include <osgUtil/SmoothingVisitor>
-#include <osg/PositionAttitudeTransform>
-
-#include <cassert>
-#include <vector>
-
-#include <QKeyEvent>
-#include <QPainter>
-#include <QWheelEvent>
-
-class SphereUpdateCallback: public osg::NodeCallback
-{
-public:
-    SphereUpdateCallback(){}
-
-    virtual void operator()(osg::Node* node, osg::NodeVisitor* nv)
-    {
-        animationFrame++;
-
-        osg::Vec3d positionOfBall(0.0, 0.0, animationScaleStep*animationFrame);
-        osg::PositionAttitudeTransform *pat = dynamic_cast<osg::PositionAttitudeTransform *> (node);
-        pat->setPosition(positionOfBall);
-
-        traverse(node, nv);
-
-        if(animationFrame>=20)
-            animationFrame=0;
-    }
-protected:
-    unsigned int animationFrame{0};
-    double animationScaleStep{1.0/1.0};
-};
-
-
 
 OSGWidget::OSGWidget( QWidget* parent, Qt::WindowFlags flags ):
     QOpenGLWidget{ parent,flags },

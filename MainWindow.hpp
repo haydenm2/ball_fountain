@@ -1,5 +1,5 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef MAINWINDOW_HPP
+#define MAINWINDOW_HPP
 
 #include <QMainWindow>
 #include <QtCore>
@@ -23,4 +23,4 @@ private:
     Ui::MainWindowForm *mMainWindowUI;
 };
 
-#endif // MAINWINDOW_H
+#endif

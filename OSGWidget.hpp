@@ -1,6 +1,13 @@
-#ifndef MEEN_570_OSGWIDGET
-#define MEEN_570_OSGWIDGET
+#ifndef OSG_WIDGET_HPP
+#define OSG_WIDGET_HPP
 
+#include "SphereUpdateCallback.hpp"
+
+#include <cassert>
+
+#include <QKeyEvent>
+#include <QPainter>
+#include <QWheelEvent>
 #include <QOpenGLWidget>
 
 #include <osg/ref_ptr>
@@ -8,6 +15,19 @@
 #include <osgViewer/CompositeViewer>
 #include <osgGA/TrackballManipulator>
 #include <osgText/Text>
+#include <osg/Camera>
+#include <osg/DisplaySettings>
+#include <osg/Geode>
+#include <osg/Material>
+#include <osg/Shape>
+#include <osg/ShapeDrawable>
+#include <osg/StateSet>
+#include <osgDB/WriteFile>
+#include <osgGA/EventQueue>
+#include <osgViewer/View>
+#include <osgViewer/ViewerEventHandlers>
+#include <osg/MatrixTransform>
+#include <osg/LineWidth>
 
 class OSGWidget : public QOpenGLWidget
 {
