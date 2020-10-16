@@ -8,7 +8,6 @@
 #include <osg/PositionAttitudeTransform>
 
 #include <vector>
-#include <chrono>
 
 
 class SphereUpdateCallback: public osg::NodeCallback
@@ -16,10 +15,9 @@ class SphereUpdateCallback: public osg::NodeCallback
 public:
     SphereUpdateCallback();
     virtual void operator()(osg::Node* node, osg::NodeVisitor* nodeVisitor);
+    BallPhysics physics;
 protected:
-    std::chrono::time_point<std::chrono::high_resolution_clock> animationStartTimeOffset{std::chrono::high_resolution_clock::now()};
-    double animationTime{0.0};
-    double animationTimeScale{1.0};
+
 };
 
 #endif
