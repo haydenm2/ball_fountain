@@ -13,3 +13,15 @@ void BallPhysics::add_ball(double &radius, double &mass, unsigned int &color, st
     Ball newBall(radius, mass, color, position, velocity, acceleration, coefficientOfRestitution);
     this->balls.push_back(newBall);
 }
+
+void BallPhysics::update(double deltaTime)
+{
+    for(Ball &ball : balls)
+    {
+        for(int index{0}; index < 3; index++)
+        {
+            ball.position[index] = ball.position[index]+ball.velocity[index]*deltaTime+ball.acceleration[index]*pow(deltaTime, 2);
+            ball.velocity[index] = ball.velocity[index]+ball.acceleration[index]*deltaTime;
+        }
+    }
+}
