@@ -20,7 +20,7 @@ void BallPhysics::update(double deltaTime)
     {
         for(int index{0}; index < 3; index++)
         {
-            ball.position[index] = ball.position[index]+ball.velocity[index]*deltaTime+ball.acceleration[index]*pow(deltaTime, 2);
+            ball.position[index] = ball.position[index]+ball.velocity[index]*deltaTime+0.5*ball.acceleration[index]*pow(deltaTime, 2);
             ball.velocity[index] = ball.velocity[index]+ball.acceleration[index]*deltaTime;
         }
     }
