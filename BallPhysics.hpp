@@ -18,6 +18,7 @@ public:
     std::vector<Ball> balls;
     float gravity{-9.81};
     unsigned int ballCount{0};
+    double boxBoundSize{30};
 
 
 private:

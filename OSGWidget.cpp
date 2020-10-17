@@ -12,7 +12,7 @@ OSGWidget::OSGWidget(QWidget* parent, Qt::WindowFlags flags):
 
     osg::Camera* camera = create_camera();
 
-    osg::Vec3 initialManipulatorPosition{0.0, -40.0, 5.0};
+    osg::Vec3 initialManipulatorPosition{0.0, -50.0, 50.0};
     osg::Vec3 initialManipulatorPointingPosition{0, 0, 0};
     osg::Vec3 upVector{0,0,1};
     osg::ref_ptr<osgGA::TrackballManipulator> manipulator = create_manipulator(initialManipulatorPosition, initialManipulatorPointingPosition, upVector);
@@ -32,7 +32,7 @@ OSGWidget::OSGWidget(QWidget* parent, Qt::WindowFlags flags):
     osg::Vec4 cylinderColor{0.5f, 0.5f, 0.5f, 1.f};
     add_cylinder(initialCylinderPosition, cylinderRadius, cylinderHeight, cylinderColor);
 
-    float groundPlaneSize{100};
+    float groundPlaneSize{30};
     osg::Vec4 groundColor{0.04f, 0.4f, 0.14f, 0.0f};
     add_ground_plane(groundPlaneSize, groundColor);
 

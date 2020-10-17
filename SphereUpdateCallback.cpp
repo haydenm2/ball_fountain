@@ -6,10 +6,10 @@ SphereUpdateCallback::SphereUpdateCallback()
     double radius{2};
     double mass{5};
     unsigned int color{128};
-    std::array<double, 3> position{0.0, 0.0, 2.0};
-    std::array<double, 3> velocity{0.0, 0.0, 20.0};
+    std::array<double, 3> position{0.0, 0.0, radius};
+    std::array<double, 3> velocity{10.0, 15.0, 20.0};
     std::array<double, 3> acceleration{0.0, 0.0, physics.gravity};
-    double coefficientOfRestitution{0.5};
+    double coefficientOfRestitution{0.3};
 
     physics.add_ball(radius, mass, color, position, velocity, acceleration, coefficientOfRestitution);
 }

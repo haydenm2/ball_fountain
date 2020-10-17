@@ -22,10 +22,15 @@ void BallPhysics::update(double deltaTime)
         {
             ball.position[index] = ball.position[index]+ball.velocity[index]*deltaTime+0.5*ball.acceleration[index]*pow(deltaTime, 2);
             ball.velocity[index] = ball.velocity[index]+ball.acceleration[index]*deltaTime;
-            if(index == 2 && ball.position[2] <= ball.radius)
+            if(index == 2 && ball.position[index] <= ball.radius)
             {
                 ball.velocity[index] = ball.coefficientOfRestitution*fabs(ball.velocity[index]);
                 ball.position[index] = ball.radius;
+            }
+            else if(index != 2 && fabs(ball.position[index]) >= boxBoundSize-ball.radius)
+            {
+                ball.velocity[index] = -ball.coefficientOfRestitution*ball.velocity[index];
+                ball.position[index] = copysign(boxBoundSize-ball.radius, ball.position[index]);
             }
         }
     }

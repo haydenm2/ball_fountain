@@ -288,3 +288,55 @@ TEST(PhysicsTests, WhenUpdatingBallGroundCollisionWithNonTrivialCoefficientOfRes
     EXPECT_ARRAY3_DOUBLE_EQ(physics.balls[0].velocity, velocityExpected);
     EXPECT_ARRAY3_DOUBLE_EQ(physics.balls[0].position, positionExpected);
 }
+
+TEST(PhysicsTests, WhenUpdatingBallXWallCollisionWithNonTrivialCoefficientOfRestitution_ExpectRadiusPositionInsideBoxAndDepletedOppositeVelocity)
+{
+    BallPhysics physics;
+
+    double radius{4};
+    double mass{5};
+    unsigned int color{128};
+    std::array<double, 3> position{100, 0, 10};
+    std::array<double, 3> velocity{10, 0, 0};
+    std::array<double, 3> acceleration{0, 0, physics.gravity};
+    double coefficientOfRestitution{0.3};
+
+    physics.add_ball(radius, mass, color, position, velocity, acceleration, coefficientOfRestitution);
+
+    double deltaTime{0.0};
+    physics.update(deltaTime);
+
+    std::array<double, 3> accelerationExpected{0, 0, physics.gravity};
+    std::array<double, 3> velocityExpected{-coefficientOfRestitution*velocity[0], 0, 0};
+    std::array<double, 3> positionExpected{(physics.boxBoundSize-physics.balls[0].radius), 0, 10};
+
+    EXPECT_ARRAY3_DOUBLE_EQ(physics.balls[0].acceleration, accelerationExpected);
+    EXPECT_ARRAY3_DOUBLE_EQ(physics.balls[0].velocity, velocityExpected);
+    EXPECT_ARRAY3_DOUBLE_EQ(physics.balls[0].position, positionExpected);
+}
+
+TEST(PhysicsTests, WhenUpdatingBallYWallCollisionWithNonTrivialCoefficientOfRestitution_ExpectRadiusPositionInsideBoxAndDepletedOppositeVelocity)
+{
+    BallPhysics physics;
+
+    double radius{4};
+    double mass{5};
+    unsigned int color{128};
+    std::array<double, 3> position{0, -100, 10};
+    std::array<double, 3> velocity{0, -10, 0};
+    std::array<double, 3> acceleration{0, 0, physics.gravity};
+    double coefficientOfRestitution{0.7};
+
+    physics.add_ball(radius, mass, color, position, velocity, acceleration, coefficientOfRestitution);
+
+    double deltaTime{0.0};
+    physics.update(deltaTime);
+
+    std::array<double, 3> accelerationExpected{0, 0, physics.gravity};
+    std::array<double, 3> velocityExpected{0, -coefficientOfRestitution*velocity[1], 0};
+    std::array<double, 3> positionExpected{0, -(physics.boxBoundSize-physics.balls[0].radius), 10};
+
+    EXPECT_ARRAY3_DOUBLE_EQ(physics.balls[0].acceleration, accelerationExpected);
+    EXPECT_ARRAY3_DOUBLE_EQ(physics.balls[0].velocity, velocityExpected);
+    EXPECT_ARRAY3_DOUBLE_EQ(physics.balls[0].position, positionExpected);
+}
