@@ -4,6 +4,7 @@
 #include "Ball.hpp"
 #include <vector>
 #include <math.h>
+#include <iostream>
 
 class BallPhysics
 {

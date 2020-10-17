@@ -12,7 +12,7 @@ OSGWidget::OSGWidget(QWidget* parent, Qt::WindowFlags flags):
 
     osg::Camera* camera = create_camera();
 
-    osg::Vec3 initialManipulatorPosition{0.0, -50.0, 50.0};
+    osg::Vec3 initialManipulatorPosition{0.0, -40.0, 5.0};
     osg::Vec3 initialManipulatorPointingPosition{0, 0, 0};
     osg::Vec3 upVector{0,0,1};
     osg::ref_ptr<osgGA::TrackballManipulator> manipulator = create_manipulator(initialManipulatorPosition, initialManipulatorPointingPosition, upVector);
@@ -21,8 +21,8 @@ OSGWidget::OSGWidget(QWidget* parent, Qt::WindowFlags flags):
 
     mViewer = create_viewer(mView);
 
-    osg::Vec3 initialBallPosition{0.f, 0.f, 4.f};
     float ballRadius{2.0f};
+    osg::Vec3 initialBallPosition{0.f, 0.f, ballRadius};
     osg::Vec4 ballColor{0.f, 0.f, 1.f, 1.f};
     add_ball(initialBallPosition, ballRadius, ballColor);
 

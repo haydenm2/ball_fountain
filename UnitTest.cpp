@@ -103,7 +103,7 @@ TEST(PhysicsTests, WhenUpdatingGravityPhysicsOverTimeStep_ExpectCorrectPosition)
     double radius{10};
     double mass{5};
     unsigned int color{128};
-    std::array<double, 3> position{0, 0, 0};
+    std::array<double, 3> position{0, 0, 1000};
     std::array<double, 3> velocity{1, 1, 1};
     std::array<double, 3> acceleration{0, 0, physics.gravity};
     double coefficientOfRestitution{0};
@@ -115,7 +115,7 @@ TEST(PhysicsTests, WhenUpdatingGravityPhysicsOverTimeStep_ExpectCorrectPosition)
 
     std::array<double, 3> accelerationExpected{0, 0, physics.gravity};
     std::array<double, 3> velocityExpected{1, 1, 1+acceleration[2]*deltaTime};
-    std::array<double, 3> positionExpected{0+velocity[0]*deltaTime, 0+velocity[1]*deltaTime, 0+velocity[2]*deltaTime+0.5*acceleration[2]*pow(deltaTime, 2)};
+    std::array<double, 3> positionExpected{0+velocity[0]*deltaTime, 0+velocity[1]*deltaTime, 1000+velocity[2]*deltaTime+0.5*acceleration[2]*pow(deltaTime, 2)};
 
     EXPECT_ARRAY3_DOUBLE_EQ(physics.balls[0].acceleration, accelerationExpected);
     EXPECT_ARRAY3_DOUBLE_EQ(physics.balls[0].velocity, velocityExpected);
@@ -129,7 +129,7 @@ TEST(PhysicsTests, WhenUpdatingNoPhysicsOverTimeStep_ExpectNoChange)
     double radius{10};
     double mass{5};
     unsigned int color{128};
-    std::array<double, 3> position{0, 0, 0};
+    std::array<double, 3> position{10, 10, 10};
     std::array<double, 3> velocity{0, 0, 0};
     std::array<double, 3> acceleration{0, 0, 0};
     double coefficientOfRestitution{0};
@@ -141,7 +141,7 @@ TEST(PhysicsTests, WhenUpdatingNoPhysicsOverTimeStep_ExpectNoChange)
 
     std::array<double, 3> accelerationExpected{0, 0, 0};
     std::array<double, 3> velocityExpected{0, 0, 0};
-    std::array<double, 3> positionExpected{0, 0, 0};
+    std::array<double, 3> positionExpected{10, 10, 10};
 
     EXPECT_ARRAY3_DOUBLE_EQ(physics.balls[0].acceleration, accelerationExpected);
     EXPECT_ARRAY3_DOUBLE_EQ(physics.balls[0].velocity, velocityExpected);
@@ -155,14 +155,14 @@ TEST(PhysicsTests, WhenUpdatingSequentialBallsTwoTimeSteps_ExpectCorrectPosition
     double radius{10};
     double mass{5};
     unsigned int color{128};
-    std::array<double, 3> position{0, 0, 0};
+    std::array<double, 3> position{0, 0, 1000};
     std::array<double, 3> velocity{1, 1, 1};
     std::array<double, 3> acceleration{0, 0, physics.gravity};
     double coefficientOfRestitution{0};
 
     physics.add_ball(radius, mass, color, position, velocity, acceleration, coefficientOfRestitution);
 
-    double deltaTime{10};
+    double deltaTime{5};
     physics.update(deltaTime);
 
     physics.add_ball(radius, mass, color, position, velocity, acceleration, coefficientOfRestitution);
@@ -170,11 +170,11 @@ TEST(PhysicsTests, WhenUpdatingSequentialBallsTwoTimeSteps_ExpectCorrectPosition
 
     std::array<double, 3> accelerationExpected1{0, 0, physics.gravity};
     std::array<double, 3> velocityExpected1{1, 1, 1+acceleration[2]*(2*deltaTime)};
-    std::array<double, 3> positionExpected1{0+velocity[0]*(2*deltaTime), 0+velocity[1]*(2*deltaTime), 0+velocity[2]*(2*deltaTime)+0.5*acceleration[2]*pow((2*deltaTime), 2)};
+    std::array<double, 3> positionExpected1{0+velocity[0]*(2*deltaTime), 0+velocity[1]*(2*deltaTime), 1000+velocity[2]*(2*deltaTime)+0.5*acceleration[2]*pow((2*deltaTime), 2)};
 
     std::array<double, 3> accelerationExpected2{0, 0, physics.gravity};
     std::array<double, 3> velocityExpected2{1, 1, 1+acceleration[2]*deltaTime};
-    std::array<double, 3> positionExpected2{0+velocity[0]*deltaTime, 0+velocity[1]*deltaTime, 0+velocity[2]*deltaTime+0.5*acceleration[2]*pow(deltaTime, 2)};
+    std::array<double, 3> positionExpected2{0+velocity[0]*deltaTime, 0+velocity[1]*deltaTime, 1000+velocity[2]*deltaTime+0.5*acceleration[2]*pow(deltaTime, 2)};
 
     EXPECT_ARRAY3_DOUBLE_EQ(physics.balls[0].acceleration, accelerationExpected1);
     EXPECT_ARRAY3_DOUBLE_EQ(physics.balls[0].velocity, velocityExpected1);
@@ -183,4 +183,108 @@ TEST(PhysicsTests, WhenUpdatingSequentialBallsTwoTimeSteps_ExpectCorrectPosition
     EXPECT_ARRAY3_DOUBLE_EQ(physics.balls[1].acceleration, accelerationExpected2);
     EXPECT_ARRAY3_DOUBLE_EQ(physics.balls[1].velocity, velocityExpected2);
     EXPECT_ARRAY3_DOUBLE_EQ(physics.balls[1].position, positionExpected2);
+}
+
+TEST(PhysicsTests, WhenUpdatingGroundBallCollision_ExpectCorrectPositionAndOppositeVelocity)
+{
+    BallPhysics physics;
+
+    double radius{2};
+    double mass{5};
+    unsigned int color{128};
+    std::array<double, 3> position{0, 0, 2};
+    std::array<double, 3> velocity{0, 0, -10};
+    std::array<double, 3> acceleration{0, 0, physics.gravity};
+    double coefficientOfRestitution{1.0};
+
+    physics.add_ball(radius, mass, color, position, velocity, acceleration, coefficientOfRestitution);
+
+    double deltaTime{0.0};
+    physics.update(deltaTime);
+
+    std::array<double, 3> accelerationExpected{0, 0, physics.gravity};
+    std::array<double, 3> velocityExpected{0, 0, -velocity[2]};
+    std::array<double, 3> positionExpected{0, 0, physics.balls[0].radius};
+
+    EXPECT_ARRAY3_DOUBLE_EQ(physics.balls[0].acceleration, accelerationExpected);
+    EXPECT_ARRAY3_DOUBLE_EQ(physics.balls[0].velocity, velocityExpected);
+    EXPECT_ARRAY3_DOUBLE_EQ(physics.balls[0].position, positionExpected);
+}
+
+TEST(PhysicsTests, WhenUpdatingBallCollisionInGround_ExpectRadiusPositionAboveGroundAndOppositeVelocity)
+{
+    BallPhysics physics;
+
+    double radius{4};
+    double mass{5};
+    unsigned int color{128};
+    std::array<double, 3> position{0, 0, -1};
+    std::array<double, 3> velocity{0, 0, -10};
+    std::array<double, 3> acceleration{0, 0, physics.gravity};
+    double coefficientOfRestitution{1.0};
+
+    physics.add_ball(radius, mass, color, position, velocity, acceleration, coefficientOfRestitution);
+
+    double deltaTime{0.0};
+    physics.update(deltaTime);
+
+    std::array<double, 3> accelerationExpected{0, 0, physics.gravity};
+    std::array<double, 3> velocityExpected{0, 0, -velocity[2]};
+    std::array<double, 3> positionExpected{0, 0, physics.balls[0].radius};
+
+    EXPECT_ARRAY3_DOUBLE_EQ(physics.balls[0].acceleration, accelerationExpected);
+    EXPECT_ARRAY3_DOUBLE_EQ(physics.balls[0].velocity, velocityExpected);
+    EXPECT_ARRAY3_DOUBLE_EQ(physics.balls[0].position, positionExpected);
+}
+
+TEST(PhysicsTests, WhenUpdatingBallBelowGround_ExpectRadiusPositionAboveGroundAndOppositeVelocity)
+{
+    BallPhysics physics;
+
+    double radius{4};
+    double mass{5};
+    unsigned int color{128};
+    std::array<double, 3> position{0, 0, -100};
+    std::array<double, 3> velocity{0, 0, -10};
+    std::array<double, 3> acceleration{0, 0, physics.gravity};
+    double coefficientOfRestitution{1.0};
+
+    physics.add_ball(radius, mass, color, position, velocity, acceleration, coefficientOfRestitution);
+
+    double deltaTime{0.0};
+    physics.update(deltaTime);
+
+    std::array<double, 3> accelerationExpected{0, 0, physics.gravity};
+    std::array<double, 3> velocityExpected{0, 0, -velocity[2]};
+    std::array<double, 3> positionExpected{0, 0, physics.balls[0].radius};
+
+    EXPECT_ARRAY3_DOUBLE_EQ(physics.balls[0].acceleration, accelerationExpected);
+    EXPECT_ARRAY3_DOUBLE_EQ(physics.balls[0].velocity, velocityExpected);
+    EXPECT_ARRAY3_DOUBLE_EQ(physics.balls[0].position, positionExpected);
+}
+
+TEST(PhysicsTests, WhenUpdatingBallGroundCollisionWithNonTrivialCoefficientOfRestitution_ExpectRadiusPositionAboveGroundAndDepletedOppositeVelocity)
+{
+    BallPhysics physics;
+
+    double radius{4};
+    double mass{5};
+    unsigned int color{128};
+    std::array<double, 3> position{0, 0, -100};
+    std::array<double, 3> velocity{0, 0, -10};
+    std::array<double, 3> acceleration{0, 0, physics.gravity};
+    double coefficientOfRestitution{1.0};
+
+    physics.add_ball(radius, mass, color, position, velocity, acceleration, coefficientOfRestitution);
+
+    double deltaTime{0.0};
+    physics.update(deltaTime);
+
+    std::array<double, 3> accelerationExpected{0, 0, physics.gravity};
+    std::array<double, 3> velocityExpected{0, 0, -coefficientOfRestitution*velocity[2]};
+    std::array<double, 3> positionExpected{0, 0, physics.balls[0].radius};
+
+    EXPECT_ARRAY3_DOUBLE_EQ(physics.balls[0].acceleration, accelerationExpected);
+    EXPECT_ARRAY3_DOUBLE_EQ(physics.balls[0].velocity, velocityExpected);
+    EXPECT_ARRAY3_DOUBLE_EQ(physics.balls[0].position, positionExpected);
 }
