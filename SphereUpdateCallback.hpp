@@ -8,6 +8,7 @@
 #include <osg/PositionAttitudeTransform>
 
 #include <vector>
+#include <eigen3/Eigen/Dense>
 
 
 class SphereUpdateCallback: public osg::NodeCallback

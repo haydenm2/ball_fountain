@@ -5,6 +5,7 @@
 #include <vector>
 #include <math.h>
 #include <iostream>
+#include <eigen3/Eigen/Dense>
 
 class BallPhysics
 {
@@ -12,7 +13,7 @@ public:
     BallPhysics();
     ~BallPhysics();
 
-    void add_ball(double &radius, double &mass, unsigned int &color, std::array<double, 3> &position, std::array<double, 3> &velocity, std::array<double, 3> &acceleration, double &coefficientOfRestitution);
+    void add_ball(double &radius, double &mass, unsigned int &color, Eigen::Vector3d &position, Eigen::Vector3d &velocity, Eigen::Vector3d &acceleration, double &coefficientOfRestitution);
     void update(double deltaTime);
 
     std::vector<Ball> balls;

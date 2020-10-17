@@ -5,6 +5,7 @@ find_package(Qt5Widgets)
 find_package(Qt5Gui)
 find_package(OpenSceneGraph REQUIRED COMPONENTS osgDB osgGA osgUtil osgViewer osgText)
 find_package(GTest REQUIRED)
+find_package(Eigen3 3.3 REQUIRED)
 
 include_directories(${GTEST_INCLUDE_DIRS})
 include_directories( ${OPENSCENEGRAPH_INCLUDE_DIRS} )
@@ -50,11 +51,13 @@ target_link_libraries(${PROJECT_NAME}
     Qt5::Widgets
     Qt5::Gui
     ${PHYSICS_NAME}
+    Eigen3::Eigen
     )
 
 target_link_libraries(${TEST_NAME}
     ${GTEST_LIBRARIES}
     ${GTEST_MAIN_LIBRARIES}
     ${PHYSICS_NAME}
+    Eigen3::Eigen
     )
 

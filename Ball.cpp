@@ -4,7 +4,7 @@ Ball::Ball()
 {
 }
 
-Ball::Ball(double radiusInit, double massInit, unsigned int colorInit, std::array<double, 3> positionInit, std::array<double, 3> velocityInit, std::array<double, 3> accelerationInit, double coefficientOfRestitutionInit) :
+Ball::Ball(double radiusInit, double massInit, unsigned int colorInit, Eigen::Vector3d positionInit, Eigen::Vector3d velocityInit, Eigen::Vector3d accelerationInit, double coefficientOfRestitutionInit) :
     radius{radiusInit},
     mass{massInit},
     color{colorInit},
