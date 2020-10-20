@@ -18,13 +18,7 @@ OSGWidget::OSGWidget(QWidget* parent, Qt::WindowFlags flags):
     osg::ref_ptr<osgGA::TrackballManipulator> manipulator = create_manipulator(initialManipulatorPosition, initialManipulatorPointingPosition, upVector);
 
     mView = create_view(camera, manipulator);
-
     mViewer = create_viewer(mView);
-
-    float ballRadius{2.0f};
-    osg::Vec3 initialBallPosition{0.f, 0.f, ballRadius};
-    osg::Vec4 ballColor{0.f, 0.f, 1.f, 1.f};
-    add_ball(initialBallPosition, ballRadius, ballColor);
 
     osg::Vec3 initialCylinderPosition{0.f, 0.f, 2.f};
     float cylinderRadius{2.0f};
@@ -47,6 +41,13 @@ OSGWidget::~OSGWidget()
 
 void OSGWidget::timerEvent(QTimerEvent *)
 {
+    if(physics.ballCount < physics.maxBallCount)
+    {
+        osg::Vec3 initialBallPosition{0.f, 0.f, radius};
+        osg::Vec4 ballColor{0.f, 0.f, 1.f, 1.f};
+        add_ball(initialBallPosition, radius, ballColor);
+    }
+    physics.update(1/mFramesPerSecond);
     update();
 }
 
@@ -139,6 +140,8 @@ osgViewer::CompositeViewer* OSGWidget::create_viewer(osgViewer::View *view)
 
 void OSGWidget::add_ball(osg::Vec3 &initialBallPosition, float &ballRadius, osg::Vec4 &ballColor)
 {
+    physics.add_ball(radius, mass, color, position, velocity, acceleration, coefficientOfRestitution);
+
     osg::Sphere* ball = new osg::Sphere(initialBallPosition, ballRadius);
     osg::ShapeDrawable* sdBall = new osg::ShapeDrawable(ball);
     sdBall->setColor(ballColor);
@@ -152,9 +155,15 @@ void OSGWidget::add_ball(osg::Vec3 &initialBallPosition, float &ballRadius, osg:
     stateSetBall->setMode(GL_DEPTH_TEST, osg::StateAttribute::ON);
     osg::PositionAttitudeTransform *transformBall = new osg::PositionAttitudeTransform;
     transformBall->setPosition(initialBallPosition);
-    transformBall->setUpdateCallback(new SphereUpdateCallback());
+    transformBall->setUpdateCallback(new SphereUpdateCallback(&physics));
     transformBall->addChild(geodeBall);
     this->mRoot->addChild(transformBall);
+}
+
+void OSGWidget::replace_ball(osg::Vec3 &initialBallPosition, float &ballRadius, osg::Vec4 &ballColor)
+{
+    this->mRoot->removeChild(1);
+    add_ball(initialBallPosition, ballRadius, ballColor);
 }
 
 void OSGWidget::add_cylinder(osg::Vec3 &initialCylinderPosition, float &cylinderRadius, float &cylinderHeight, osg::Vec4 &cylinderColor)

@@ -1,24 +1,15 @@
 #include "SphereUpdateCallback.hpp"
 
 
-SphereUpdateCallback::SphereUpdateCallback()
+SphereUpdateCallback::SphereUpdateCallback(BallPhysics *systemPhysics): physics{systemPhysics}
 {
-    double radius{2};
-    double mass{5};
-    unsigned int color{128};
-    Eigen::Vector3d position{0.0, 0.0, radius};
-    Eigen::Vector3d velocity{10.0, 15.0, 20.0};
-    Eigen::Vector3d acceleration{0.0, 0.0, physics.gravity};
-    double coefficientOfRestitution{0.7};
-
-    physics.add_ball(radius, mass, color, position, velocity, acceleration, coefficientOfRestitution);
 }
 
 void SphereUpdateCallback::operator()(osg::Node* node, osg::NodeVisitor* visitingNode)
 {
-    double deltaTime{1.0/10.0};
-    physics.update(deltaTime);
-    osg::Vec3d positionOfBall(physics.balls[0].position[0], physics.balls[0].position[1], physics.balls[0].position[2]);
+    osg::Group *parent = node->getParent(0);
+    int nodeNumber = parent->getChildIndex(node);
+    osg::Vec3f positionOfBall(physics->balls[nodeNumber].position[0], physics->balls[nodeNumber].position[1], physics->balls[nodeNumber].position[2]);
     osg::PositionAttitudeTransform *ballTransformation = dynamic_cast<osg::PositionAttitudeTransform *> (node);
     ballTransformation->setPosition(positionOfBall);
 

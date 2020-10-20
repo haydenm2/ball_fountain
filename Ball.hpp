@@ -9,15 +9,15 @@ class Ball
 {
 public:
     Ball();
-    Ball(double radius, double mass, unsigned int color, Eigen::Vector3d position, Eigen::Vector3d velocity, Eigen::Vector3d acceleration, double coefficientOfRestitution);
+    Ball(float radius, float mass, unsigned int color, Eigen::Vector3f position, Eigen::Vector3f velocity, Eigen::Vector3f acceleration, float coefficientOfRestitution);
     ~Ball();
-    double radius{1};
-    double mass{1};
+    float radius{1};
+    float mass{1};
     unsigned int color{0};
-    Eigen::Vector3d position{0.0, 0.0, 0.0};
-    Eigen::Vector3d velocity{0.0, 0.0, 0.0};
-    Eigen::Vector3d acceleration{0.0, 0.0, 0.0};
-    double coefficientOfRestitution{0.0};
+    Eigen::Vector3f position{0.0, 0.0, 0.0};
+    Eigen::Vector3f velocity{0.0, 0.0, 0.0};
+    Eigen::Vector3f acceleration{0.0, 0.0, 0.0};
+    float coefficientOfRestitution{0.0};
 private:
 
 };

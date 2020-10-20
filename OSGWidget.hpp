@@ -44,9 +44,19 @@ public:
   osgViewer::View* create_view(osg::Camera *camera, osg::ref_ptr<osgGA::TrackballManipulator> &manipulator);
   osgViewer::CompositeViewer* create_viewer(osgViewer::View *view);
   void add_ball(osg::Vec3 &initialBallPosition, float &ballRadius, osg::Vec4 &ballColor);
+  void replace_ball(osg::Vec3 &initialBallPosition, float &ballRadius, osg::Vec4 &ballColor);
   void add_cylinder(osg::Vec3 &initialCylinderPosition, float &cylinderRadius, float &cylinderHeight, osg::Vec4 &cylinderColor);
   void add_ground_plane(float &groundPlaneSize, osg::Vec4 &groundColor);
   void configure_update();
+
+  BallPhysics physics;
+  float radius{2};
+  float mass{5};
+  unsigned int color{128};
+  Eigen::Vector3f position{0.0, 0.0, radius};
+  Eigen::Vector3f velocity{10.0, 15.0, 20.0};
+  Eigen::Vector3f acceleration{0.0, 0.0, physics.gravity};
+  float coefficientOfRestitution{0.7};
 
 protected:
   virtual void paintEvent( QPaintEvent* paintEvent );

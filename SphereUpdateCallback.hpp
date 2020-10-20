@@ -14,10 +14,11 @@
 class SphereUpdateCallback: public osg::NodeCallback
 {
 public:
-    SphereUpdateCallback();
+    SphereUpdateCallback(BallPhysics *systemPhysics);
     virtual void operator()(osg::Node* node, osg::NodeVisitor* nodeVisitor);
-    BallPhysics physics;
+
 protected:
+    BallPhysics *physics;
 
 };
 
