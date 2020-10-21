@@ -9,7 +9,7 @@ void SphereUpdateCallback::operator()(osg::Node* node, osg::NodeVisitor* visitin
 {
     osg::Group *parent = node->getParent(0);
     int nodeNumber = parent->getChildIndex(node);
-    osg::Vec3f positionOfBall(physics->balls[nodeNumber].position[0], physics->balls[nodeNumber].position[1], physics->balls[nodeNumber].position[2]);
+    osg::Vec3f positionOfBall(physics->balls[nodeNumber-2].position[0], physics->balls[nodeNumber-2].position[1], physics->balls[nodeNumber-2].position[2]);
     osg::PositionAttitudeTransform *ballTransformation = dynamic_cast<osg::PositionAttitudeTransform *> (node);
     ballTransformation->setPosition(positionOfBall);
 

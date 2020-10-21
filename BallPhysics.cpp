@@ -41,24 +41,24 @@ void BallPhysics::update(float deltaTime)
                 ball.position[index] = ball.position[index] + ball.velocity[index]*deltaTime + 0.5*ball.acceleration[index]*pow(deltaTime, 2);
             }
         }
-//        for(int ballCollisionIndex{0}; ballCollisionIndex < ballCount; ballCollisionIndex++)
-//        {
-//            if(ballCollisionIndex == ballIndex)
-//                continue;
-//            else
-//            {
-//                Ball &ballCollisionCandidate = balls[ballCollisionIndex];
-//                Eigen::Vector3f positionDifference = ball.position - ballCollisionCandidate.position;
-//                float offsetFromBall = positionDifference.norm();
-//                if(offsetFromBall < (ball.radius + ballCollisionCandidate.radius))
-//                {
-//                    ballCollisionCandidate.position -= positionDifference/offsetFromBall*(ball.radius + ballCollisionCandidate.radius);
-//                    Eigen::Vector3f velocityDifference = ball.velocity - ballCollisionCandidate.velocity;
-//                    float totalMass = ball.mass + ballCollisionCandidate.mass;
-//                    ball.velocity = ball.coefficientOfRestitution*(ball.velocity - 2*ballCollisionCandidate.mass/totalMass*velocityDifference.dot(positionDifference)/pow(positionDifference.norm(),2)*positionDifference);
-//                    ballCollisionCandidate.velocity = ballCollisionCandidate.coefficientOfRestitution*(ballCollisionCandidate.velocity - 2*ball.mass/totalMass*(-velocityDifference).dot(-positionDifference)/pow(positionDifference.norm(),2)*(-positionDifference));
-//                }
-//            }
-//        }
+        for(int ballCollisionIndex{0}; ballCollisionIndex < ballCount; ballCollisionIndex++)
+        {
+            if(ballCollisionIndex == ballIndex)
+                continue;
+            else
+            {
+                Ball &ballCollisionCandidate = balls[ballCollisionIndex];
+                Eigen::Vector3f positionDifference = ball.position - ballCollisionCandidate.position;
+                float offsetFromBall = positionDifference.norm();
+                if(offsetFromBall < (ball.radius + ballCollisionCandidate.radius))
+                {
+                    ballCollisionCandidate.position -= positionDifference/offsetFromBall*(ball.radius + ballCollisionCandidate.radius);
+                    Eigen::Vector3f velocityDifference = ball.velocity - ballCollisionCandidate.velocity;
+                    float totalMass = ball.mass + ballCollisionCandidate.mass;
+                    ball.velocity = ball.coefficientOfRestitution*(ball.velocity - 2*ballCollisionCandidate.mass/totalMass*velocityDifference.dot(positionDifference)/pow(positionDifference.norm(),2)*positionDifference);
+                    ballCollisionCandidate.velocity = ballCollisionCandidate.coefficientOfRestitution*(ballCollisionCandidate.velocity - 2*ball.mass/totalMass*(-velocityDifference).dot(-positionDifference)/pow(positionDifference.norm(),2)*(-positionDifference));
+                }
+            }
+        }
     }
 }

@@ -35,20 +35,24 @@ OSGWidget::OSGWidget(QWidget* parent, Qt::WindowFlags flags):
 
 OSGWidget::~OSGWidget()
 {
-    killTimer(mTimerId);
+    killTimer(simulationUpdateTimerId);
     delete mViewer;
 }
 
-void OSGWidget::timerEvent(QTimerEvent *)
+void OSGWidget::timerEvent(QTimerEvent *event)
 {
-    if(physics.ballCount < physics.maxBallCount)
+    if(event->timerId() == 2)
     {
-        osg::Vec3 initialBallPosition{0.f, 0.f, radius};
-        osg::Vec4 ballColor{0.f, 0.f, 1.f, 1.f};
-        add_ball(initialBallPosition, radius, ballColor);
+        physics.update(1/framesPerSecond);
+        update();
     }
-    physics.update(1/mFramesPerSecond);
-    update();
+    else if(event->timerId() == 1)
+    {
+        if(physics.ballCount < physics.maxBallCount)
+        {
+            add_ball();
+        }
+    }
 }
 
 void OSGWidget::paintEvent(QPaintEvent* /* paintEvent */)
@@ -138,11 +142,13 @@ osgViewer::CompositeViewer* OSGWidget::create_viewer(osgViewer::View *view)
     return viewer;
 }
 
-void OSGWidget::add_ball(osg::Vec3 &initialBallPosition, float &ballRadius, osg::Vec4 &ballColor)
+void OSGWidget::add_ball()
 {
+    osg::Vec3 initialBallPosition{0.f, 0.f, radius};
+    osg::Vec4 ballColor{0.f, 0.f, 1.f, 1.f};
     physics.add_ball(radius, mass, color, position, velocity, acceleration, coefficientOfRestitution);
 
-    osg::Sphere* ball = new osg::Sphere(initialBallPosition, ballRadius);
+    osg::Sphere* ball = new osg::Sphere(initialBallPosition, radius);
     osg::ShapeDrawable* sdBall = new osg::ShapeDrawable(ball);
     sdBall->setColor(ballColor);
     sdBall->setName("Sphere");
@@ -160,10 +166,10 @@ void OSGWidget::add_ball(osg::Vec3 &initialBallPosition, float &ballRadius, osg:
     this->mRoot->addChild(transformBall);
 }
 
-void OSGWidget::replace_ball(osg::Vec3 &initialBallPosition, float &ballRadius, osg::Vec4 &ballColor)
+void OSGWidget::replace_ball()
 {
     this->mRoot->removeChild(1);
-    add_ball(initialBallPosition, ballRadius, ballColor);
+    add_ball();
 }
 
 void OSGWidget::add_cylinder(osg::Vec3 &initialCylinderPosition, float &cylinderRadius, float &cylinderHeight, osg::Vec4 &cylinderColor)
@@ -221,7 +227,11 @@ void OSGWidget::configure_update()
 
     this->update();
 
-    double timeStep{1.0/this->mFramesPerSecond};
-    double timerDurationInMilliSeconds{timeStep * 1000};
-    this->mTimerId = startTimer(timerDurationInMilliSeconds);
+    double simulationUpdateTimeStep{1.0/this->framesPerSecond};
+    double simulationTimerDurationInMilliSeconds{simulationUpdateTimeStep * 1000};
+    this->simulationUpdateTimerId = startTimer(simulationTimerDurationInMilliSeconds);
+
+    double ballUpdateTimeStep{1.0/this->ballRate};
+    double ballTimerDurationInMilliSeconds{ballUpdateTimeStep * 1000};
+    this->ballUpdateTimerId = startTimer(ballTimerDurationInMilliSeconds);
 }

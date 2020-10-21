@@ -43,8 +43,8 @@ public:
   osg::ref_ptr<osgGA::TrackballManipulator>create_manipulator(osg::Vec3 &initialPosition, osg::Vec3 &initialPointingPosition, osg::Vec3 &upVector);
   osgViewer::View* create_view(osg::Camera *camera, osg::ref_ptr<osgGA::TrackballManipulator> &manipulator);
   osgViewer::CompositeViewer* create_viewer(osgViewer::View *view);
-  void add_ball(osg::Vec3 &initialBallPosition, float &ballRadius, osg::Vec4 &ballColor);
-  void replace_ball(osg::Vec3 &initialBallPosition, float &ballRadius, osg::Vec4 &ballColor);
+  void add_ball();
+  void replace_ball();
   void add_cylinder(osg::Vec3 &initialCylinderPosition, float &cylinderRadius, float &cylinderHeight, osg::Vec4 &cylinderColor);
   void add_ground_plane(float &groundPlaneSize, osg::Vec4 &groundColor);
   void configure_update();
@@ -54,9 +54,10 @@ public:
   float mass{5};
   unsigned int color{128};
   Eigen::Vector3f position{0.0, 0.0, radius};
-  Eigen::Vector3f velocity{10.0, 15.0, 20.0};
+  Eigen::Vector3f velocity{0.0, 0.0, 20.0};
   Eigen::Vector3f acceleration{0.0, 0.0, physics.gravity};
   float coefficientOfRestitution{0.7};
+  float ballRate{1.0};
 
 protected:
   virtual void paintEvent( QPaintEvent* paintEvent );
@@ -73,8 +74,9 @@ private:
   osg::ref_ptr<osgViewer::CompositeViewer> mViewer;
   osg::ref_ptr<osgViewer::View> mView;
   osg::ref_ptr<osg::Group> mRoot;
-  int mTimerId{0};
-  double mFramesPerSecond{30};
+  int simulationUpdateTimerId{0};
+  int ballUpdateTimerId{1};
+  double framesPerSecond{30};
 };
 
 #endif
