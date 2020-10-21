@@ -36,7 +36,7 @@ OSGWidget::OSGWidget(QWidget* parent, Qt::WindowFlags flags):
 OSGWidget::~OSGWidget()
 {
     killTimer(simulationUpdateTimerId);
-    delete mViewer;
+    killTimer(ballUpdateTimerId);
 }
 
 void OSGWidget::timerEvent(QTimerEvent *event)
