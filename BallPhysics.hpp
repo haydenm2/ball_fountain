@@ -14,6 +14,7 @@ public:
     ~BallPhysics();
 
     void add_ball(float &radius, float &mass, unsigned int &color, Eigen::Vector3f &position, Eigen::Vector3f &velocity, Eigen::Vector3f &acceleration, float &coefficientOfRestitution);
+    void update_ball(unsigned int &index, float &radius, float &mass, unsigned int &color, Eigen::Vector3f &position, Eigen::Vector3f &velocity, Eigen::Vector3f &acceleration, float &coefficientOfRestitution);
     void update(float deltaTime);
 
     std::vector<Ball> balls;
@@ -21,6 +22,7 @@ public:
     unsigned int ballCount{0};
     unsigned int maxBallCount{100};
     float boxBoundSize{30};
+    unsigned int ballReplaceIndex{0};
 
 
 private:

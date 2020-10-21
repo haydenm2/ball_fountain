@@ -16,7 +16,27 @@ void BallPhysics::add_ball(float &radius, float &mass, unsigned int &color, Eige
         this->balls.push_back(newBall);
         this->ballCount++;
     }
+    else
+    {
+        update_ball(ballReplaceIndex, radius, mass, color, position, velocity, acceleration, coefficientOfRestitution);
+        if(ballReplaceIndex < maxBallCount)
+            ballReplaceIndex++;
+        else
+            ballReplaceIndex = 0;
+    }
 }
+
+void BallPhysics::update_ball(unsigned int &index, float &radius, float &mass, unsigned int &color, Eigen::Vector3f &position, Eigen::Vector3f &velocity, Eigen::Vector3f &acceleration, float &coefficientOfRestitution)
+{
+    this->balls[index].radius = radius;
+    this->balls[index].mass = mass;
+    this->balls[index].color = color;
+    this->balls[index].position = position;
+    this->balls[index].velocity = velocity;
+    this->balls[index].acceleration = acceleration;
+    this->balls[index].coefficientOfRestitution = coefficientOfRestitution;
+}
+
 
 void BallPhysics::update(float deltaTime)
 {

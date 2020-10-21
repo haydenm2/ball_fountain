@@ -20,9 +20,9 @@ OSGWidget::OSGWidget(QWidget* parent, Qt::WindowFlags flags):
     mView = create_view(camera, manipulator);
     mViewer = create_viewer(mView);
 
-    osg::Vec3 initialCylinderPosition{0.f, 0.f, 2.f};
-    float cylinderRadius{2.0f};
     float cylinderHeight{4.0f};
+    float cylinderRadius{radius};
+    osg::Vec3 initialCylinderPosition{0.f, 0.f, cylinderHeight/2.0};
     osg::Vec4 cylinderColor{0.5f, 0.5f, 0.5f, 1.f};
     add_cylinder(initialCylinderPosition, cylinderRadius, cylinderHeight, cylinderColor);
 
@@ -51,6 +51,10 @@ void OSGWidget::timerEvent(QTimerEvent *event)
         if(physics.ballCount < physics.maxBallCount)
         {
             add_ball();
+        }
+        else
+        {
+            replace_ball();
         }
     }
 }
@@ -169,8 +173,8 @@ void OSGWidget::add_ball()
 
 void OSGWidget::replace_ball()
 {
-    this->mRoot->removeChild(1);
-    add_ball();
+    Eigen::Vector3f velocityWithNoise{(std::rand()%100)/100.0, (std::rand()%100)/100.0, velocity[2]};
+    physics.add_ball(radius, mass, color, position, velocityWithNoise, acceleration, coefficientOfRestitution);
 }
 
 void OSGWidget::add_cylinder(osg::Vec3 &initialCylinderPosition, float &cylinderRadius, float &cylinderHeight, osg::Vec4 &cylinderColor)
@@ -232,7 +236,7 @@ void OSGWidget::configure_update()
     double simulationTimerDurationInMilliSeconds{simulationUpdateTimeStep * 1000};
     this->simulationUpdateTimerId = startTimer(simulationTimerDurationInMilliSeconds);
 
-    double ballUpdateTimeStep{1.0/this->ballRate};
+    double ballUpdateTimeStep{1.0/this->ballsPerSecond};
     double ballTimerDurationInMilliSeconds{ballUpdateTimeStep * 1000};
     this->ballUpdateTimerId = startTimer(ballTimerDurationInMilliSeconds);
 }

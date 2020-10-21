@@ -50,14 +50,14 @@ public:
   void configure_update();
 
   BallPhysics physics;
-  float radius{2};
+  float radius{1};
   float mass{5};
   unsigned int color{128};
-  Eigen::Vector3f position{0.0, 0.0, radius};
-  Eigen::Vector3f velocity{0.0, 0.0, 20.0};
+  Eigen::Vector3f position{0.0, 0.0, 2*radius};
+  Eigen::Vector3f velocity{0.0, 0.0, 50.0};
   Eigen::Vector3f acceleration{0.0, 0.0, physics.gravity};
   float coefficientOfRestitution{0.7};
-  float ballRate{1.0};
+  float ballsPerSecond{5.0};
 
 protected:
   virtual void paintEvent( QPaintEvent* paintEvent );
@@ -75,7 +75,7 @@ private:
   osg::ref_ptr<osgViewer::View> mView;
   osg::ref_ptr<osg::Group> mRoot;
   int simulationUpdateTimerId{0};
-  int ballUpdateTimerId{1};
+  int ballUpdateTimerId{0};
   double framesPerSecond{30};
 };
 
