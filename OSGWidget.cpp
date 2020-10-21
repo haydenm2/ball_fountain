@@ -146,7 +146,8 @@ void OSGWidget::add_ball()
 {
     osg::Vec3 initialBallPosition{0.f, 0.f, radius};
     osg::Vec4 ballColor{0.f, 0.f, 1.f, 1.f};
-    physics.add_ball(radius, mass, color, position, velocity, acceleration, coefficientOfRestitution);
+    Eigen::Vector3f velocityWithNoise{(std::rand()%100)/100.0, (std::rand()%100)/100.0, velocity[2]};
+    physics.add_ball(radius, mass, color, position, velocityWithNoise, acceleration, coefficientOfRestitution);
 
     osg::Sphere* ball = new osg::Sphere(initialBallPosition, radius);
     osg::ShapeDrawable* sdBall = new osg::ShapeDrawable(ball);

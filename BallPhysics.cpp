@@ -52,7 +52,7 @@ void BallPhysics::update(float deltaTime)
                 float offsetFromBall = positionDifference.norm();
                 if(offsetFromBall < (ball.radius + ballCollisionCandidate.radius))
                 {
-                    ballCollisionCandidate.position -= positionDifference/offsetFromBall*(ball.radius + ballCollisionCandidate.radius);
+                    ballCollisionCandidate.position = ball.position - positionDifference/offsetFromBall*(ball.radius + ballCollisionCandidate.radius);
                     Eigen::Vector3f velocityDifference = ball.velocity - ballCollisionCandidate.velocity;
                     float totalMass = ball.mass + ballCollisionCandidate.mass;
                     ball.velocity = ball.coefficientOfRestitution*(ball.velocity - 2*ballCollisionCandidate.mass/totalMass*velocityDifference.dot(positionDifference)/pow(positionDifference.norm(),2)*positionDifference);
