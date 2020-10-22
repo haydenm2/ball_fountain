@@ -36,7 +36,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="QCheckBox" name="checkBox_2">
+         <widget class="QCheckBox" name="checkBox_Pause">
           <property name="text">
            <string>PAUSE</string>
           </property>
@@ -58,7 +58,7 @@
        </layout>
       </item>
       <item>
-       <widget class="QPushButton" name="pushButton_3">
+       <widget class="QPushButton" name="pushButton_Reset">
         <property name="text">
          <string>RESET</string>
         </property>
@@ -106,7 +106,7 @@
        </layout>
       </item>
       <item>
-       <widget class="QSlider" name="horizontalSlider">
+       <widget class="QSlider" name="horizontalSlider_BallMass">
         <property name="minimum">
          <number>1</number>
         </property>
@@ -175,7 +175,7 @@
        </layout>
       </item>
       <item>
-       <widget class="QSlider" name="horizontalSlider_4">
+       <widget class="QSlider" name="horizontalSlider_BallSize">
         <property name="minimum">
          <number>1</number>
         </property>
@@ -241,7 +241,7 @@
        </layout>
       </item>
       <item>
-       <widget class="QSlider" name="horizontalSlider_6">
+       <widget class="QSlider" name="horizontalSlider_BallColor">
         <property name="maximum">
          <number>255</number>
         </property>
@@ -301,7 +301,7 @@
        </layout>
       </item>
       <item>
-       <widget class="QSlider" name="horizontalSlider_5">
+       <widget class="QSlider" name="horizontalSlider_BallVelocity">
         <property name="minimum">
          <number>1</number>
         </property>
@@ -367,7 +367,7 @@
        </layout>
       </item>
       <item>
-       <widget class="QSlider" name="horizontalSlider_3">
+       <widget class="QSlider" name="horizontalSlider_BallFrequency">
         <property name="minimum">
          <number>1</number>
         </property>
@@ -433,7 +433,7 @@
        </layout>
       </item>
       <item>
-       <widget class="QSlider" name="horizontalSlider_8">
+       <widget class="QSlider" name="horizontalSlider_MaxBallCount">
         <property name="minimum">
          <number>1</number>
         </property>
@@ -499,7 +499,7 @@
        </layout>
       </item>
       <item>
-       <widget class="QSlider" name="horizontalSlider_2">
+       <widget class="QSlider" name="horizontalSlider_FluidViscosity">
         <property name="maximum">
          <number>100</number>
         </property>
@@ -524,7 +524,7 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_21">
         <item>
-         <widget class="QPushButton" name="pushButton">
+         <widget class="QPushButton" name="pushButton_DefaultParameters">
           <property name="text">
            <string>DEFAULTS</string>
           </property>
@@ -547,7 +547,7 @@
          </spacer>
         </item>
         <item>
-         <widget class="QCheckBox" name="checkBox">
+         <widget class="QCheckBox" name="checkBox_Sound">
           <property name="text">
            <string>SOUND</string>
           </property>

@@ -4,6 +4,8 @@
 #include <QMainWindow>
 #include <QtCore>
 
+#include "OSGWidget.hpp"
+
 namespace Ui {
 class MainWindowForm;
 }
@@ -18,6 +20,9 @@ public:
 
 public slots:
     void on_actionExit_triggered();
+
+private slots:
+    void on_horizontalSlider_BallMass_sliderMoved(int position);
 
 private:
     Ui::MainWindowForm *mMainWindowUI;
