@@ -23,3 +23,9 @@ void MainWindow::on_horizontalSlider_BallMass_sliderMoved(int newMass)
     OSGWidget *osgWidget = qobject_cast<OSGWidget *>(findChild<QObject *>("graphicsView"));
     osgWidget->mass = newMass;
 }
+
+void MainWindow::on_horizontalSlider_BallSize_sliderMoved(int newRadius)
+{
+    OSGWidget *osgWidget = qobject_cast<OSGWidget *>(findChild<QObject *>("graphicsView"));
+    osgWidget->radius = newRadius/100.0;
+}

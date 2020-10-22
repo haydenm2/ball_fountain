@@ -24,6 +24,8 @@ public slots:
 private slots:
     void on_horizontalSlider_BallMass_sliderMoved(int position);
 
+    void on_horizontalSlider_BallSize_sliderMoved(int position);
+
 private:
     Ui::MainWindowForm *mMainWindowUI;
 };
