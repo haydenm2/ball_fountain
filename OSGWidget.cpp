@@ -12,7 +12,7 @@ OSGWidget::OSGWidget(QWidget* parent, Qt::WindowFlags flags):
 
     osg::Camera* camera = create_camera();
 
-    osg::Vec3 initialManipulatorPosition{0.0, -50.0, 50.0};
+    osg::Vec3 initialManipulatorPosition{0.0, -15.0, 15.0};
     osg::Vec3 initialManipulatorPointingPosition{0, 0, 0};
     osg::Vec3 upVector{0,0,1};
     osg::ref_ptr<osgGA::TrackballManipulator> manipulator = create_manipulator(initialManipulatorPosition, initialManipulatorPointingPosition, upVector);
@@ -20,13 +20,12 @@ OSGWidget::OSGWidget(QWidget* parent, Qt::WindowFlags flags):
     mView = create_view(camera, manipulator);
     mViewer = create_viewer(mView);
 
-    float cylinderHeight{4.0f};
     float cylinderRadius{radius};
+    float cylinderHeight{fountainHeightScale*radius};
     osg::Vec3 initialCylinderPosition{0.f, 0.f, cylinderHeight/2.0};
     osg::Vec4 cylinderColor{0.5f, 0.5f, 0.5f, 1.f};
     add_cylinder(initialCylinderPosition, cylinderRadius, cylinderHeight, cylinderColor);
 
-    float groundPlaneSize{30};
     osg::Vec4 groundColor{0.04f, 0.4f, 0.14f, 0.0f};
     add_ground_plane(groundPlaneSize, groundColor);
 
@@ -148,12 +147,14 @@ osgViewer::CompositeViewer* OSGWidget::create_viewer(osgViewer::View *view)
 
 void OSGWidget::add_ball()
 {
-    osg::Vec3 initialBallPosition{0.f, 0.f, radius};
+    osg::Vec3 zeros{0.f, 0.f, 0.f};
+    osg::Vec3 initialBallPosition{0.f, 0.f, 3*radius};
     osg::Vec4 ballColor{0.f, 0.f, 1.f, 1.f};
-    Eigen::Vector3f velocityWithNoise{(std::rand()%100)/100.0, (std::rand()%100)/100.0, velocity[2]};
-    physics.add_ball(radius, mass, color, position, velocityWithNoise, acceleration, coefficientOfRestitution);
+    position[2] = fountainHeightScale*radius;
+    Eigen::Vector3f velocityWithNoise{0.1*(std::rand()%200-100)/100.0, 0.1*(std::rand()%200-100)/100.0, velocity[2]};
+    physics.add_ball(radius, mass, color, position, velocityWithNoise, coefficientOfRestitution);
 
-    osg::Sphere* ball = new osg::Sphere(initialBallPosition, radius);
+    osg::Sphere* ball = new osg::Sphere(zeros, radius);
     osg::ShapeDrawable* sdBall = new osg::ShapeDrawable(ball);
     sdBall->setColor(ballColor);
     sdBall->setName("Sphere");
@@ -174,12 +175,13 @@ void OSGWidget::add_ball()
 void OSGWidget::replace_ball()
 {
     Eigen::Vector3f velocityWithNoise{(std::rand()%100)/100.0, (std::rand()%100)/100.0, velocity[2]};
-    physics.add_ball(radius, mass, color, position, velocityWithNoise, acceleration, coefficientOfRestitution);
+    physics.add_ball(radius, mass, color, position, velocityWithNoise, coefficientOfRestitution);
 }
 
 void OSGWidget::add_cylinder(osg::Vec3 &initialCylinderPosition, float &cylinderRadius, float &cylinderHeight, osg::Vec4 &cylinderColor)
 {
-    osg::Cylinder* cylinder = new osg::Cylinder(initialCylinderPosition, cylinderRadius, cylinderHeight);
+    osg::Vec3 zeros{0.f, 0.f, 0.f};
+    osg::Cylinder* cylinder = new osg::Cylinder(zeros, cylinderRadius, cylinderHeight);
     osg::ShapeDrawable* sdCylinder = new osg::ShapeDrawable(cylinder);
     sdCylinder->setColor(cylinderColor);
     sdCylinder->setName("Cylinder");

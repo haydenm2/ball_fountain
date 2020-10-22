@@ -1,6 +1,7 @@
 #include "BallPhysics.hpp"
 
-BallPhysics::BallPhysics()
+
+BallPhysics::BallPhysics(float boxBoundSizeInput, float fluidDensityInput): boxBoundSize{boxBoundSizeInput}, fluidDensity{fluidDensityInput}
 {
 }
 
@@ -8,8 +9,14 @@ BallPhysics::~BallPhysics()
 {
 }
 
-void BallPhysics::add_ball(float &radius, float &mass, unsigned int &color, Eigen::Vector3f &position, Eigen::Vector3f &velocity, Eigen::Vector3f &acceleration, float &coefficientOfRestitution)
+void BallPhysics::add_ball(float &radius, float &mass, unsigned int &color, Eigen::Vector3f &position, Eigen::Vector3f &velocity, float &coefficientOfRestitution)
 {
+    float velocityMagnitude = velocity.norm();
+    Eigen::Vector3f dragForce = Eigen::Vector3f{0.0, 0.0, 0.0};;
+    if(velocityMagnitude > 0)
+        dragForce = -(0.5*fluidDensity*pow(velocityMagnitude, 2)*dragCoefficient*(M_PI*pow(radius, 2)))/mass*velocity/velocityMagnitude;
+
+    Eigen::Vector3f acceleration = Eigen::Vector3f{0.0, 0.0, gravity} + dragForce;
     if(ballCount < maxBallCount)
     {
         Ball newBall(radius, mass, color, position, velocity, acceleration, coefficientOfRestitution);
@@ -43,6 +50,11 @@ void BallPhysics::update(float deltaTime)
     for(int ballIndex{0}; ballIndex < ballCount; ballIndex++)
     {
         Ball &ball = balls[ballIndex];
+        float velocityMagnitude = ball.velocity.norm();
+        Eigen::Vector3f dragForce = Eigen::Vector3f{0.0, 0.0, 0.0};;
+        if(velocityMagnitude > 0)
+            dragForce = -(0.5*fluidDensity*pow(velocityMagnitude, 2)*dragCoefficient*(M_PI*pow(ball.radius, 2)))/ball.mass*ball.velocity/velocityMagnitude;
+        ball.acceleration = Eigen::Vector3f{0.0, 0.0, gravity} + dragForce;
         for(int index{0}; index < 3; index++)
         {
             if(index == 2 && ball.position[index] < ball.radius)

@@ -49,15 +49,19 @@ public:
   void add_ground_plane(float &groundPlaneSize, osg::Vec4 &groundColor);
   void configure_update();
 
-  BallPhysics physics;
-  float radius{1};
+  float groundPlaneSize{10};
+  float fluidDensity{0.5};
+  BallPhysics physics{BallPhysics(groundPlaneSize, fluidDensity)};
+
+  float fountainHeightScale{3.0};
+  float radius{0.5};
   float mass{5};
   unsigned int color{128};
-  Eigen::Vector3f position{0.0, 0.0, 2*radius};
-  Eigen::Vector3f velocity{0.0, 0.0, 50.0};
-  Eigen::Vector3f acceleration{0.0, 0.0, physics.gravity};
+  Eigen::Vector3f position{0.0, 0.0, 0.0};
+  Eigen::Vector3f velocity{0.0, 0.0, 20.0};
   float coefficientOfRestitution{0.7};
   float ballsPerSecond{5.0};
+
 
 protected:
   virtual void paintEvent( QPaintEvent* paintEvent );
