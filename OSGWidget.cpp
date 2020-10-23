@@ -149,7 +149,7 @@ void OSGWidget::add_ball()
 {
     osg::Vec3 zeros{0.f, 0.f, 0.f};
     osg::Vec3 initialBallPosition{0.f, 0.f, 3*radius};
-    osg::Vec4 ballColor{0.f, 0.f, 1.f, 1.f};
+    osg::Vec4 ballColor{color/255.0, 0.f, 1.f, 1.f};
     position[2] = fountainHeightScale*radius;
     Eigen::Vector3f velocityWithNoise{0.1*(std::rand()%200-100)/100.0, 0.1*(std::rand()%200-100)/100.0, velocity[2]};
     physics.add_ball(radius, mass, color, position, velocityWithNoise, coefficientOfRestitution);

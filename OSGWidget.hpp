@@ -56,7 +56,7 @@ public:
   float fountainHeightScale{3.0};
   float radius{0.5};
   float mass{5};
-  unsigned int color{128};
+  unsigned int color{0};
   Eigen::Vector3f position{0.0, 0.0, 0.0};
   Eigen::Vector3f velocity{0.0, 0.0, 20.0};
   float coefficientOfRestitution{0.7};

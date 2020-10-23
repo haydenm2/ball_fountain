@@ -18,14 +18,26 @@ void MainWindow::on_actionExit_triggered()
     QApplication::quit();
 }
 
-void MainWindow::on_horizontalSlider_BallMass_sliderMoved(int newMass)
+void MainWindow::on_horizontalSlider_BallMass_valueChanged(int newMass)
 {
     OSGWidget *osgWidget = qobject_cast<OSGWidget *>(findChild<QObject *>("graphicsView"));
     osgWidget->mass = newMass;
 }
 
-void MainWindow::on_horizontalSlider_BallSize_sliderMoved(int newRadius)
+void MainWindow::on_horizontalSlider_BallSize_valueChanged(int newRadius)
 {
     OSGWidget *osgWidget = qobject_cast<OSGWidget *>(findChild<QObject *>("graphicsView"));
     osgWidget->radius = newRadius/100.0;
+}
+
+void MainWindow::on_horizontalSlider_BallVelocity_valueChanged(int newVelocity)
+{
+    OSGWidget *osgWidget = qobject_cast<OSGWidget *>(findChild<QObject *>("graphicsView"));
+    osgWidget->velocity[2] = newVelocity;
+}
+
+void MainWindow::on_horizontalSlider_BallColor_valueChanged(int newColor)
+{
+    OSGWidget *osgWidget = qobject_cast<OSGWidget *>(findChild<QObject *>("graphicsView"));
+    osgWidget->color = newColor;
 }
