@@ -32,6 +32,10 @@ private slots:
 
     void on_horizontalSlider_BallFrequency_valueChanged(int newFrequency);
 
+    void on_horizontalSlider_MaxBallCount_valueChanged(int newMaxBallCount);
+
+    void on_horizontalSlider_FluidViscosity_valueChanged(int value);
+
 private:
     Ui::MainWindowForm *mMainWindowUI;
 };

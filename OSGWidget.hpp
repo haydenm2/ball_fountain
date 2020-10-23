@@ -45,16 +45,17 @@ public:
   osgViewer::CompositeViewer* create_viewer(osgViewer::View *view);
   void add_ball();
   void replace_ball();
+  void remove_ball();
   void add_cylinder(osg::Vec3 &initialCylinderPosition, float &cylinderRadius, float &cylinderHeight, osg::Vec4 &cylinderColor);
   void add_ground_plane(float &groundPlaneSize, osg::Vec4 &groundColor);
   void configure_update();
   void updateBallUpdateRate();
 
   float groundPlaneSize{10};
-  float fluidDensity{0.5};
-  BallPhysics physics{BallPhysics(groundPlaneSize, fluidDensity)};
-
+  float initialFluidDensity{0.5};
+  BallPhysics physics{BallPhysics(groundPlaneSize, initialFluidDensity)};
   float fountainHeightScale{3.0};
+
   float radius{0.5};
   float mass{5};
   unsigned int color{0};
@@ -66,7 +67,6 @@ public:
   int simulationUpdateTimerId{0};
   int ballUpdateTimerId{0};
   double framesPerSecond{30};
-
 
 protected:
   virtual void paintEvent( QPaintEvent* paintEvent );

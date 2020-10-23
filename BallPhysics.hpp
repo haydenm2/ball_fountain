@@ -15,6 +15,7 @@ public:
 
     void add_ball(float &radius, float &mass, unsigned int &color, Eigen::Vector3f &position, Eigen::Vector3f &velocity, float &coefficientOfRestitution);
     void update(float deltaTime);
+    void remove_ball();
 
     std::vector<Ball> balls;
     float gravity{-9.81};

@@ -180,6 +180,12 @@ void OSGWidget::add_ball()
     this->mRoot->addChild(transformBall);
 }
 
+void OSGWidget::remove_ball()
+{
+    physics.remove_ball();
+    this->mRoot->removeChild(physics.ballCount);
+}
+
 void OSGWidget::replace_ball()
 {
     Eigen::Vector3f velocityWithNoise{(std::rand()%100)/100.0, (std::rand()%100)/100.0, velocity[2]};

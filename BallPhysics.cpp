@@ -44,6 +44,12 @@ void BallPhysics::update_ball(unsigned int &index, float &radius, float &mass, u
     this->balls[index].coefficientOfRestitution = coefficientOfRestitution;
 }
 
+void BallPhysics::remove_ball()
+{
+    balls.pop_back();
+
+    ballCount--;
+}
 
 void BallPhysics::update(float deltaTime)
 {
