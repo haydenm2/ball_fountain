@@ -48,6 +48,7 @@ public:
   void add_cylinder(osg::Vec3 &initialCylinderPosition, float &cylinderRadius, float &cylinderHeight, osg::Vec4 &cylinderColor);
   void add_ground_plane(float &groundPlaneSize, osg::Vec4 &groundColor);
   void configure_update();
+  void updateBallUpdateRate();
 
   float groundPlaneSize{10};
   float fluidDensity{0.5};
@@ -61,6 +62,10 @@ public:
   Eigen::Vector3f velocity{0.0, 0.0, 20.0};
   float coefficientOfRestitution{0.7};
   float ballsPerSecond{5.0};
+
+  int simulationUpdateTimerId{0};
+  int ballUpdateTimerId{0};
+  double framesPerSecond{30};
 
 
 protected:
@@ -78,9 +83,6 @@ private:
   osg::ref_ptr<osgViewer::CompositeViewer> mViewer;
   osg::ref_ptr<osgViewer::View> mView;
   osg::ref_ptr<osg::Group> mRoot;
-  int simulationUpdateTimerId{0};
-  int ballUpdateTimerId{0};
-  double framesPerSecond{30};
 };
 
 #endif

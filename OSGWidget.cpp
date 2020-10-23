@@ -38,14 +38,22 @@ OSGWidget::~OSGWidget()
     killTimer(ballUpdateTimerId);
 }
 
+void OSGWidget::updateBallUpdateRate()
+{
+    killTimer(ballUpdateTimerId);
+    double ballUpdateTimeStep{1.0/ballsPerSecond};
+    double ballTimerDurationInMilliSeconds{ballUpdateTimeStep * 1000};
+    ballUpdateTimerId = startTimer(ballTimerDurationInMilliSeconds);
+}
+
 void OSGWidget::timerEvent(QTimerEvent *event)
 {
-    if(event->timerId() == 2)
+    if(event->timerId() == simulationUpdateTimerId)
     {
         physics.update(1/framesPerSecond);
         update();
     }
-    else if(event->timerId() == 1)
+    else if(event->timerId() == ballUpdateTimerId)
     {
         if(physics.ballCount < physics.maxBallCount)
         {

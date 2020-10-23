@@ -30,6 +30,8 @@ private slots:
 
     void on_horizontalSlider_BallColor_valueChanged(int newColor);
 
+    void on_horizontalSlider_BallFrequency_valueChanged(int newFrequency);
+
 private:
     Ui::MainWindowForm *mMainWindowUI;
 };

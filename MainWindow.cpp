@@ -41,3 +41,10 @@ void MainWindow::on_horizontalSlider_BallColor_valueChanged(int newColor)
     OSGWidget *osgWidget = qobject_cast<OSGWidget *>(findChild<QObject *>("graphicsView"));
     osgWidget->color = newColor;
 }
+
+void MainWindow::on_horizontalSlider_BallFrequency_valueChanged(int newFrequency)
+{
+    OSGWidget *osgWidget = qobject_cast<OSGWidget *>(findChild<QObject *>("graphicsView"));
+    osgWidget->ballsPerSecond = newFrequency;
+    osgWidget->updateBallUpdateRate();
+}
