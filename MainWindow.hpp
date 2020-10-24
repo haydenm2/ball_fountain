@@ -38,6 +38,8 @@ private slots:
 
     void on_horizontalSlider_BallBounciness_valueChanged(int newCoefficient);
 
+    void on_pushButton_DefaultParameters_clicked();
+
 private:
     Ui::MainWindowForm *mMainWindowUI;
 };
