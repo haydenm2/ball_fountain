@@ -61,6 +61,8 @@ void BallPhysics::update(float deltaTime)
         if(velocityMagnitude > 0)
             dragForce = -(0.5*fluidDensity*pow(velocityMagnitude, 2)*dragCoefficient*(M_PI*pow(ball.radius, 2)))/ball.mass*ball.velocity/velocityMagnitude;
         ball.acceleration = Eigen::Vector3f{0.0, 0.0, gravity} + dragForce;
+        ball.velocity = ball.velocity + ball.acceleration*deltaTime;
+        ball.position = ball.position + ball.velocity*deltaTime + 0.5*ball.acceleration*pow(deltaTime, 2);
         for(int index{0}; index < 3; index++)
         {
             if(index == 2 && ball.position[index] < ball.radius)
@@ -72,11 +74,6 @@ void BallPhysics::update(float deltaTime)
             {
                 ball.velocity[index] = -ball.coefficientOfRestitution*ball.velocity[index];
                 ball.position[index] = copysign(boxBoundSize-ball.radius, ball.position[index]);
-            }
-            else
-            {
-                ball.velocity[index] = ball.velocity[index] + ball.acceleration[index]*deltaTime;
-                ball.position[index] = ball.position[index] + ball.velocity[index]*deltaTime + 0.5*ball.acceleration[index]*pow(deltaTime, 2);
             }
         }
         for(int ballCollisionIndex{0}; ballCollisionIndex < ballCount; ballCollisionIndex++)
