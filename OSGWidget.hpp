@@ -45,7 +45,6 @@ public:
   osgViewer::CompositeViewer* create_viewer(osgViewer::View *view);
   void add_ball();
   void replace_ball();
-  void remove_ball();
   void add_cylinder(osg::Vec3 &initialCylinderPosition, float &cylinderRadius, float &cylinderHeight, osg::Vec4 &cylinderColor);
   void add_ground_plane(float &groundPlaneSize, osg::Vec4 &groundColor);
   void configure_update();

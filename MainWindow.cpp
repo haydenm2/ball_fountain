@@ -49,23 +49,14 @@ void MainWindow::on_horizontalSlider_BallFrequency_valueChanged(int newFrequency
     osgWidget->updateBallUpdateRate();
 }
 
-void MainWindow::on_horizontalSlider_MaxBallCount_valueChanged(int newMaxBallCount)
-{
-    OSGWidget *osgWidget = qobject_cast<OSGWidget *>(findChild<QObject *>("graphicsView"));
-    osgWidget->physics.maxBallCount = newMaxBallCount;
-    if(osgWidget->physics.ballCount > osgWidget->physics.maxBallCount)
-    {
-        osgWidget->physics.ballCount = osgWidget->physics.maxBallCount;
-        osgWidget->physics.ballReplaceIndex = 0;
-        while(osgWidget->physics.ballCount > osgWidget->physics.maxBallCount)
-        {
-            osgWidget->remove_ball();
-        }
-    }
-}
-
 void MainWindow::on_horizontalSlider_FluidViscosity_valueChanged(int newFluidDensity)
 {
     OSGWidget *osgWidget = qobject_cast<OSGWidget *>(findChild<QObject *>("graphicsView"));
     osgWidget->physics.fluidDensity = newFluidDensity/10.0;
+}
+
+void MainWindow::on_horizontalSlider_Gravity_valueChanged(int newGravity)
+{
+    OSGWidget *osgWidget = qobject_cast<OSGWidget *>(findChild<QObject *>("graphicsView"));
+    osgWidget->physics.gravity = -9.81*(newGravity/10.0);
 }

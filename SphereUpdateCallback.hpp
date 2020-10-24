@@ -1,11 +1,14 @@
 #ifndef SPHERE_UPDATE_HPP
 #define SPHERE_UPDATE_HPP
 
-#include "SphereUpdateCallback.hpp"
 #include "BallPhysics.hpp"
 
 #include <osg/NodeVisitor>
 #include <osg/PositionAttitudeTransform>
+#include <osg/Material>
+#include <osg/ShapeDrawable>
+#include <osg/Shape>
+#include <osg/Geode>
 
 #include <vector>
 #include <eigen3/Eigen/Dense>
