@@ -312,7 +312,7 @@
       <item>
        <widget class="QSlider" name="horizontalSlider_BallColor">
         <property name="maximum">
-         <number>255</number>
+         <number>300</number>
         </property>
         <property name="orientation">
          <enum>Qt::Horizontal</enum>

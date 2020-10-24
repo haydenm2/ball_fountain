@@ -2,6 +2,7 @@
 #define OSG_WIDGET_HPP
 
 #include "SphereUpdateCallback.hpp"
+#include "OSGWidgetUtils.hpp"
 
 #include <cassert>
 
@@ -50,6 +51,7 @@ public:
   void configure_update();
   void update_ball_update_rate();
   void update_nozzle(float newRadius);
+  osg::Vec4 hue_to_osg_rgba_decimal(int hue);
 
   float groundPlaneSize{10};
   float initialFluidDensity{0.5};

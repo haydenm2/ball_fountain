@@ -14,7 +14,7 @@ void SphereUpdateCallback::operator()(osg::Node* node, osg::NodeVisitor* visitin
     ballTransformation->setPosition(positionOfBall);
     osg::Geode *ballGeode = ballTransformation->getChild(0)->asGeode();
     osg::ShapeDrawable *ballShapeDrawable = dynamic_cast<osg::ShapeDrawable *> (ballGeode->getDrawable(0));
-    ballShapeDrawable->setColor(osg::Vec4(physics->balls[nodeNumber-2].color/255.0, 0.f, 1.f, 1.f));
+    ballShapeDrawable->setColor(osgwidgetutils::hue_to_osg_rgba_decimal(physics->balls[nodeNumber-2].color));
     osg::Sphere *ball = new osg::Sphere(osg::Vec3(0.f, 0.f, 0.f), physics->balls[nodeNumber-2].radius);
     ballShapeDrawable->setShape(ball);
 

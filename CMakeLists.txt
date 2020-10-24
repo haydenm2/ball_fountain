@@ -29,6 +29,8 @@ add_library(${PHYSICS_NAME} STATIC
 
 add_executable(${TEST_NAME}
     UnitTest.cpp
+    OSGWidgetUtils.hpp
+    OSGWidgetUtils.cpp
     )
 
 set(GUI_SOURCE
@@ -38,6 +40,8 @@ set(GUI_SOURCE
     MainWindowForm.ui
     OSGWidget.hpp
     OSGWidget.cpp
+    OSGWidgetUtils.hpp
+    OSGWidgetUtils.cpp
     SphereUpdateCallback.cpp
     SphereUpdateCallback.hpp
     )

@@ -38,23 +38,6 @@ OSGWidget::~OSGWidget()
     killTimer(ballUpdateTimerId);
 }
 
-void OSGWidget::update_ball_update_rate()
-{
-    killTimer(ballUpdateTimerId);
-    double ballUpdateTimeStep{1.0/ballsPerSecond};
-    double ballTimerDurationInMilliSeconds{ballUpdateTimeStep * 1000};
-    ballUpdateTimerId = startTimer(ballTimerDurationInMilliSeconds);
-}
-
-void OSGWidget::update_nozzle(float newRadius)
-{
-    osg::PositionAttitudeTransform *nozzleTransform = dynamic_cast<osg::PositionAttitudeTransform *> (this->mRoot->getChild(0));
-    osg::Geode *nozzleGeode = nozzleTransform->getChild(0)->asGeode();
-    osg::ShapeDrawable *nozzleShapeDrawable = dynamic_cast<osg::ShapeDrawable *> (nozzleGeode->getDrawable(0));
-    osg::Cylinder *nozzle = new osg::Cylinder(osg::Vec3(0.f, 0.f, 0.f), newRadius, newRadius*fountainHeightScale);
-    nozzleShapeDrawable->setShape(nozzle);
-}
-
 void OSGWidget::timerEvent(QTimerEvent *event)
 {
     if(event->timerId() == simulationUpdateTimerId)
@@ -162,7 +145,7 @@ void OSGWidget::add_ball()
 {
     osg::Vec3 zeros{0.f, 0.f, 0.f};
     osg::Vec3 initialBallPosition{0.f, 0.f, 3*radius};
-    osg::Vec4 ballColor{color/255.0, 0.f, 1.f, 1.f};
+    osg::Vec4 ballColor{osgwidgetutils::hue_to_osg_rgba_decimal(color)};
     position[2] = fountainHeightScale*radius;
     Eigen::Vector3f velocityWithNoise{0.1*(std::rand()%200-100)/100.0, 0.1*(std::rand()%200-100)/100.0, velocity[2]};
     physics.add_ball(radius, mass, color, position, velocityWithNoise, coefficientOfRestitution);
@@ -255,4 +238,21 @@ void OSGWidget::configure_update()
     double ballUpdateTimeStep{1.0/this->ballsPerSecond};
     double ballTimerDurationInMilliSeconds{ballUpdateTimeStep * 1000};
     this->ballUpdateTimerId = startTimer(ballTimerDurationInMilliSeconds);
+}
+
+void OSGWidget::update_ball_update_rate()
+{
+    killTimer(ballUpdateTimerId);
+    double ballUpdateTimeStep{1.0/ballsPerSecond};
+    double ballTimerDurationInMilliSeconds{ballUpdateTimeStep * 1000};
+    ballUpdateTimerId = startTimer(ballTimerDurationInMilliSeconds);
+}
+
+void OSGWidget::update_nozzle(float newRadius)
+{
+    osg::PositionAttitudeTransform *nozzleTransform = dynamic_cast<osg::PositionAttitudeTransform *> (this->mRoot->getChild(0));
+    osg::Geode *nozzleGeode = nozzleTransform->getChild(0)->asGeode();
+    osg::ShapeDrawable *nozzleShapeDrawable = dynamic_cast<osg::ShapeDrawable *> (nozzleGeode->getDrawable(0));
+    osg::Cylinder *nozzle = new osg::Cylinder(osg::Vec3(0.f, 0.f, 0.f), newRadius, newRadius*fountainHeightScale);
+    nozzleShapeDrawable->setShape(nozzle);
 }

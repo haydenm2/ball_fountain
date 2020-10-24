@@ -2,6 +2,7 @@
 #define SPHERE_UPDATE_HPP
 
 #include "BallPhysics.hpp"
+#include "OSGWidgetUtils.hpp"
 
 #include <osg/NodeVisitor>
 #include <osg/PositionAttitudeTransform>
