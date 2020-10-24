@@ -36,6 +36,8 @@ private slots:
 
     void on_horizontalSlider_Gravity_valueChanged(int newGravity);
 
+    void on_horizontalSlider_BallBounciness_valueChanged(int newCoefficient);
+
 private:
     Ui::MainWindowForm *mMainWindowUI;
 };

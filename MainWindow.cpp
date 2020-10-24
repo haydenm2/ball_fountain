@@ -60,3 +60,9 @@ void MainWindow::on_horizontalSlider_Gravity_valueChanged(int newGravity)
     OSGWidget *osgWidget = qobject_cast<OSGWidget *>(findChild<QObject *>("graphicsView"));
     osgWidget->physics.gravity = -9.81*(newGravity/10.0);
 }
+
+void MainWindow::on_horizontalSlider_BallBounciness_valueChanged(int newCoefficient)
+{
+    OSGWidget *osgWidget = qobject_cast<OSGWidget *>(findChild<QObject *>("graphicsView"));
+    osgWidget->coefficientOfRestitution = newCoefficient/100.0;
+}
