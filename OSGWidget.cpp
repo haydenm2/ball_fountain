@@ -38,12 +38,21 @@ OSGWidget::~OSGWidget()
     killTimer(ballUpdateTimerId);
 }
 
-void OSGWidget::updateBallUpdateRate()
+void OSGWidget::update_ball_update_rate()
 {
     killTimer(ballUpdateTimerId);
     double ballUpdateTimeStep{1.0/ballsPerSecond};
     double ballTimerDurationInMilliSeconds{ballUpdateTimeStep * 1000};
     ballUpdateTimerId = startTimer(ballTimerDurationInMilliSeconds);
+}
+
+void OSGWidget::update_nozzle(float newRadius)
+{
+    osg::PositionAttitudeTransform *nozzleTransform = dynamic_cast<osg::PositionAttitudeTransform *> (this->mRoot->getChild(0));
+    osg::Geode *nozzleGeode = nozzleTransform->getChild(0)->asGeode();
+    osg::ShapeDrawable *nozzleShapeDrawable = dynamic_cast<osg::ShapeDrawable *> (nozzleGeode->getDrawable(0));
+    osg::Cylinder *nozzle = new osg::Cylinder(osg::Vec3(0.f, 0.f, 0.f), newRadius, newRadius*fountainHeightScale);
+    nozzleShapeDrawable->setShape(nozzle);
 }
 
 void OSGWidget::timerEvent(QTimerEvent *event)
@@ -56,13 +65,9 @@ void OSGWidget::timerEvent(QTimerEvent *event)
     else if(event->timerId() == ballUpdateTimerId)
     {
         if(physics.ballCount < physics.maxBallCount)
-        {
             add_ball();
-        }
         else
-        {
             replace_ball();
-        }
     }
 }
 
@@ -183,6 +188,7 @@ void OSGWidget::add_ball()
 void OSGWidget::replace_ball()
 {
     Eigen::Vector3f velocityWithNoise{(std::rand()%100)/100.0, (std::rand()%100)/100.0, velocity[2]};
+    position[2] = fountainHeightScale*radius;
     physics.add_ball(radius, mass, color, position, velocityWithNoise, coefficientOfRestitution);
 }
 

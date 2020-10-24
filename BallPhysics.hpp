@@ -20,7 +20,7 @@ public:
     std::vector<Ball> balls;
     float gravity{-9.81};
     unsigned int ballCount{0};
-    unsigned int maxBallCount{20};
+    unsigned int maxBallCount{100};
     float boxBoundSize{30};
     unsigned int ballReplaceIndex{0};
     float dragCoefficient{0.5};

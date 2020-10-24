@@ -48,7 +48,8 @@ public:
   void add_cylinder(osg::Vec3 &initialCylinderPosition, float &cylinderRadius, float &cylinderHeight, osg::Vec4 &cylinderColor);
   void add_ground_plane(float &groundPlaneSize, osg::Vec4 &groundColor);
   void configure_update();
-  void updateBallUpdateRate();
+  void update_ball_update_rate();
+  void update_nozzle(float newRadius);
 
   float groundPlaneSize{10};
   float initialFluidDensity{0.5};

@@ -28,6 +28,7 @@ void MainWindow::on_horizontalSlider_BallSize_valueChanged(int newRadius)
 {
     OSGWidget *osgWidget = qobject_cast<OSGWidget *>(findChild<QObject *>("graphicsView"));
     osgWidget->radius = newRadius/100.0;
+    osgWidget->update_nozzle(newRadius/100.0);
 }
 
 void MainWindow::on_horizontalSlider_BallVelocity_valueChanged(int newVelocity)
@@ -46,7 +47,7 @@ void MainWindow::on_horizontalSlider_BallFrequency_valueChanged(int newFrequency
 {
     OSGWidget *osgWidget = qobject_cast<OSGWidget *>(findChild<QObject *>("graphicsView"));
     osgWidget->ballsPerSecond = newFrequency;
-    osgWidget->updateBallUpdateRate();
+    osgWidget->update_ball_update_rate();
 }
 
 void MainWindow::on_horizontalSlider_FluidViscosity_valueChanged(int newFluidDensity)
