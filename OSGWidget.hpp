@@ -69,6 +69,7 @@ public:
   int simulationUpdateTimerId{0};
   int ballUpdateTimerId{0};
   double framesPerSecond{30};
+  bool pause{true};
 
 protected:
   virtual void paintEvent( QPaintEvent* paintEvent );

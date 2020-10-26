@@ -94,3 +94,9 @@ void MainWindow::on_pushButton_DefaultParameters_clicked()
     QSlider *fluidDensitySlider = qobject_cast<QSlider *>(findChild<QObject *>("horizontalSlider_FluidViscosity"));
     fluidDensitySlider->setSliderPosition(5);
 }
+
+void MainWindow::on_checkBox_Pause_toggled(bool checked)
+{
+    OSGWidget *osgWidget = qobject_cast<OSGWidget *>(findChild<QObject *>("graphicsView"));
+    osgWidget->pause = checked;
+}

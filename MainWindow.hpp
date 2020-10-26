@@ -40,6 +40,8 @@ private slots:
 
     void on_pushButton_DefaultParameters_clicked();
 
+    void on_checkBox_Pause_toggled(bool checked);
+
 private:
     Ui::MainWindowForm *mMainWindowUI;
 };

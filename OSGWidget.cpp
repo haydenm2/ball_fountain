@@ -40,17 +40,20 @@ OSGWidget::~OSGWidget()
 
 void OSGWidget::timerEvent(QTimerEvent *event)
 {
-    if(event->timerId() == simulationUpdateTimerId)
+    if(!pause)
     {
-        physics.update(1/framesPerSecond);
-        update();
-    }
-    else if(event->timerId() == ballUpdateTimerId)
-    {
-        if(physics.ballCount < physics.maxBallCount)
-            add_ball();
-        else
-            replace_ball();
+        if(event->timerId() == simulationUpdateTimerId)
+        {
+            physics.update(1/framesPerSecond);
+            update();
+        }
+        else if(event->timerId() == ballUpdateTimerId)
+        {
+            if(physics.ballCount < physics.maxBallCount)
+                add_ball();
+            else
+                replace_ball();
+        }
     }
 }
 
