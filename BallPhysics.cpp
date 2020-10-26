@@ -1,7 +1,7 @@
 #include "BallPhysics.hpp"
 
 
-BallPhysics::BallPhysics(float boxBoundSizeInput, float fluidDensityInput): boxBoundSize{boxBoundSizeInput}, fluidDensity{fluidDensityInput}
+BallPhysics::BallPhysics(float boxBoundSizeInput, float fluidDensityInput, float gravityInput): boxBoundSize{boxBoundSizeInput}, fluidDensity{fluidDensityInput}, gravity{gravityInput}
 {
 }
 

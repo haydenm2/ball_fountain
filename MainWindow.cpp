@@ -53,6 +53,7 @@ void MainWindow::on_horizontalSlider_BallFrequency_valueChanged(int newFrequency
 void MainWindow::on_horizontalSlider_FluidViscosity_valueChanged(int newFluidDensity)
 {
     OSGWidget *osgWidget = qobject_cast<OSGWidget *>(findChild<QObject *>("graphicsView"));
+    osgWidget->fluidDensity = newFluidDensity/10.0;
     osgWidget->physics.fluidDensity = newFluidDensity/10.0;
 }
 
@@ -99,4 +100,10 @@ void MainWindow::on_checkBox_Pause_toggled(bool checked)
 {
     OSGWidget *osgWidget = qobject_cast<OSGWidget *>(findChild<QObject *>("graphicsView"));
     osgWidget->pause = checked;
+}
+
+void MainWindow::on_pushButton_Reset_clicked()
+{
+    OSGWidget *osgWidget = qobject_cast<OSGWidget *>(findChild<QObject *>("graphicsView"));
+    osgWidget->clear_balls();
 }

@@ -42,6 +42,8 @@ private slots:
 
     void on_checkBox_Pause_toggled(bool checked);
 
+    void on_pushButton_Reset_clicked();
+
 private:
     Ui::MainWindowForm *mMainWindowUI;
 };

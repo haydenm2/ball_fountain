@@ -178,6 +178,15 @@ void OSGWidget::replace_ball()
     physics.add_ball(radius, mass, color, position, velocityWithNoise, coefficientOfRestitution);
 }
 
+void OSGWidget::clear_balls()
+{
+    mRoot->removeChildren(2, physics.ballCount);
+    physics.balls.clear();
+    physics.ballCount = 0;
+    physics.update(0.0);
+    update();
+}
+
 void OSGWidget::add_cylinder(osg::Vec3 &initialCylinderPosition, float &cylinderRadius, float &cylinderHeight, osg::Vec4 &cylinderColor)
 {
     osg::Vec3 zeros{0.f, 0.f, 0.f};

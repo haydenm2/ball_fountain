@@ -46,6 +46,7 @@ public:
   osgViewer::CompositeViewer* create_viewer(osgViewer::View *view);
   void add_ball();
   void replace_ball();
+  void clear_balls();
   void add_cylinder(osg::Vec3 &initialCylinderPosition, float &cylinderRadius, float &cylinderHeight, osg::Vec4 &cylinderColor);
   void add_ground_plane(float &groundPlaneSize, osg::Vec4 &groundColor);
   void configure_update();
@@ -54,8 +55,8 @@ public:
   osg::Vec4 hue_to_osg_rgba_decimal(int hue);
 
   float groundPlaneSize{10};
-  float initialFluidDensity{0.5};
-  BallPhysics physics{BallPhysics(groundPlaneSize, initialFluidDensity)};
+  float fluidDensity{0.5};
+  BallPhysics physics{BallPhysics(groundPlaneSize, fluidDensity)};
   float fountainHeightScale{3.0};
 
   float radius{0.5};

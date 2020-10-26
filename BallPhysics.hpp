@@ -10,7 +10,7 @@
 class BallPhysics
 {
 public:
-    BallPhysics(float boxBoundSizeInput=30, float fluidDensityInput=0);
+    BallPhysics(float boxBoundSizeInput=30, float fluidDensityInput=0, float gravityInput=-9.81);
     ~BallPhysics();
 
     void add_ball(float &radius, float &mass, unsigned int &color, Eigen::Vector3f &position, Eigen::Vector3f &velocity, float &coefficientOfRestitution);
