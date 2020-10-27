@@ -99,7 +99,7 @@ void MainWindow::on_pushButton_DefaultParameters_clicked()
 void MainWindow::on_checkBox_Pause_toggled(bool checked)
 {
     OSGWidget *osgWidget = qobject_cast<OSGWidget *>(findChild<QObject *>("graphicsView"));
-    osgWidget->pause = checked;
+    osgWidget->pauseFlag = checked;
 }
 
 void MainWindow::on_pushButton_Reset_clicked()

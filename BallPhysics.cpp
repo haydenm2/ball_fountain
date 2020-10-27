@@ -35,20 +35,28 @@ void BallPhysics::add_ball(float &radius, float &mass, unsigned int &color, Eige
 
 void BallPhysics::update_ball(unsigned int &index, float &radius, float &mass, unsigned int &color, Eigen::Vector3f &position, Eigen::Vector3f &velocity, Eigen::Vector3f &acceleration, float &coefficientOfRestitution)
 {
-    this->balls[index].radius = radius;
-    this->balls[index].mass = mass;
-    this->balls[index].color = color;
-    this->balls[index].position = position;
-    this->balls[index].velocity = velocity;
-    this->balls[index].acceleration = acceleration;
-    this->balls[index].coefficientOfRestitution = coefficientOfRestitution;
+    if(this->ballCount >= index)
+    {
+        this->balls[index].radius = radius;
+        this->balls[index].mass = mass;
+        this->balls[index].color = color;
+        this->balls[index].position = position;
+        this->balls[index].velocity = velocity;
+        this->balls[index].acceleration = acceleration;
+        this->balls[index].coefficientOfRestitution = coefficientOfRestitution;
+    }
 }
 
 void BallPhysics::remove_ball()
 {
     balls.pop_back();
-
     ballCount--;
+}
+
+void BallPhysics::clear_balls()
+{
+    balls.clear();
+    ballCount = 0;
 }
 
 void BallPhysics::update(float deltaTime)

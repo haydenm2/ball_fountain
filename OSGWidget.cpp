@@ -40,7 +40,7 @@ OSGWidget::~OSGWidget()
 
 void OSGWidget::timerEvent(QTimerEvent *event)
 {
-    if(!pause)
+    if(!pauseFlag)
     {
         if(event->timerId() == simulationUpdateTimerId)
         {
@@ -181,9 +181,7 @@ void OSGWidget::replace_ball()
 void OSGWidget::clear_balls()
 {
     mRoot->removeChildren(2, physics.ballCount);
-    physics.balls.clear();
-    physics.ballCount = 0;
-    physics.update(0.0);
+    physics.clear_balls();
     update();
 }
 

@@ -52,7 +52,6 @@ public:
   void configure_update();
   void update_ball_update_rate();
   void update_nozzle(float newRadius);
-  osg::Vec4 hue_to_osg_rgba_decimal(int hue);
 
   float groundPlaneSize{10};
   float fluidDensity{0.5};
@@ -70,7 +69,7 @@ public:
   int simulationUpdateTimerId{0};
   int ballUpdateTimerId{0};
   double framesPerSecond{30};
-  bool pause{true};
+  bool pauseFlag{true};
 
 protected:
   virtual void paintEvent( QPaintEvent* paintEvent );
