@@ -96,12 +96,6 @@ void MainWindow::on_pushButton_DefaultParameters_clicked()
     fluidDensitySlider->setSliderPosition(5);
 }
 
-//void MainWindow::on_checkBox_Pause_toggled(bool checked)
-//{
-//    OSGWidget *osgWidget = qobject_cast<OSGWidget *>(findChild<QObject *>("graphicsView"));
-//    osgWidget->pauseFlag = checked;
-//}
-
 void MainWindow::on_pushButton_Reset_clicked()
 {
     OSGWidget *osgWidget = qobject_cast<OSGWidget *>(findChild<QObject *>("graphicsView"));
@@ -117,5 +111,4 @@ void MainWindow::on_pushButton_Pause_toggled(bool checked)
         pausePlayButton->setText(QString("Play"));
     else
         pausePlayButton->setText(QString("Pause"));
-
 }
