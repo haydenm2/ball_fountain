@@ -36,9 +36,12 @@
          </spacer>
         </item>
         <item>
-         <widget class="QCheckBox" name="checkBox_Pause">
+         <widget class="QPushButton" name="pushButton_Pause">
           <property name="text">
-           <string>PAUSE</string>
+           <string>PLAY</string>
+          </property>
+          <property name="checkable">
+           <bool>true</bool>
           </property>
           <property name="checked">
            <bool>true</bool>
