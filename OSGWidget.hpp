@@ -40,18 +40,11 @@ public:
 
   virtual ~OSGWidget();
 
-  osg::Camera* create_camera();
-  osg::ref_ptr<osgGA::TrackballManipulator>create_manipulator(osg::Vec3 &initialPosition, osg::Vec3 &initialPointingPosition, osg::Vec3 &upVector);
-  osgViewer::View* create_view(osg::Camera *camera, osg::ref_ptr<osgGA::TrackballManipulator> &manipulator);
-  osgViewer::CompositeViewer* create_viewer(osgViewer::View *view);
   void add_ball();
   void replace_ball();
   void clear_balls();
-  void add_cylinder(osg::Vec3 &initialCylinderPosition, float &cylinderRadius, float &cylinderHeight, osg::Vec4 &cylinderColor);
-  void add_ground_plane(float &groundPlaneSize, osg::Vec4 &groundColor);
-  void configure_update();
   void update_ball_update_rate();
-  void update_nozzle(float newRadius);
+  void update_nozzle();
 
   float groundPlaneSize{10};
   float fluidDensity{0.5};
@@ -66,8 +59,6 @@ public:
   float coefficientOfRestitution{0.7};
   float ballsPerSecond{5.0};
 
-  int simulationUpdateTimerId{0};
-  int ballUpdateTimerId{0};
   double framesPerSecond{30};
   bool pauseFlag{true};
 
@@ -78,14 +69,27 @@ protected:
 
   void timerEvent(QTimerEvent *);
 
+  void create_camera();
+  void create_manipulator();
+  void create_view();
+  void create_viewer();
+  void add_cylinder();
+  void add_ground_plane();
+  void configure_update();
+
 private:
   virtual void on_resize( int width, int height );
   osgGA::EventQueue* getEventQueue() const;
+
+  int simulationUpdateTimerId{0};
+  int ballUpdateTimerId{0};
 
   osg::ref_ptr<osgViewer::GraphicsWindowEmbedded> mGraphicsWindow;
   osg::ref_ptr<osgViewer::CompositeViewer> mViewer;
   osg::ref_ptr<osgViewer::View> mView;
   osg::ref_ptr<osg::Group> mRoot;
+  osg::Camera* camera;
+  osg::ref_ptr<osgGA::TrackballManipulator> manipulator;
 };
 
 #endif

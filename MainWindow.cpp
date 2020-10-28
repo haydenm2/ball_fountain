@@ -28,7 +28,7 @@ void MainWindow::on_horizontalSlider_BallSize_valueChanged(int newRadius)
 {
     OSGWidget *osgWidget = qobject_cast<OSGWidget *>(findChild<QObject *>("graphicsView"));
     osgWidget->radius = newRadius/100.0;
-    osgWidget->update_nozzle(newRadius/100.0);
+    osgWidget->update_nozzle();
 }
 
 void MainWindow::on_horizontalSlider_BallVelocity_valueChanged(int newVelocity)
@@ -54,13 +54,13 @@ void MainWindow::on_horizontalSlider_FluidViscosity_valueChanged(int newFluidDen
 {
     OSGWidget *osgWidget = qobject_cast<OSGWidget *>(findChild<QObject *>("graphicsView"));
     osgWidget->fluidDensity = newFluidDensity/10.0;
-    osgWidget->physics.fluidDensity = newFluidDensity/10.0;
+    osgWidget->physics.set_fluid_density(newFluidDensity/10.0);
 }
 
 void MainWindow::on_horizontalSlider_Gravity_valueChanged(int newGravity)
 {
     OSGWidget *osgWidget = qobject_cast<OSGWidget *>(findChild<QObject *>("graphicsView"));
-    osgWidget->physics.gravity = -9.81*(newGravity/10.0);
+    osgWidget->physics.set_gravity(-9.81*(newGravity/10.0));
 }
 
 void MainWindow::on_horizontalSlider_BallBounciness_valueChanged(int newCoefficient)

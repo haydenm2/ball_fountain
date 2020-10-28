@@ -136,12 +136,12 @@ TEST(PhysicsTests, WhenAddingBall_ExpectCorrectInitialization)
 
     BallPhysics physics;
     physics.add_ball(radius, mass, color, position, velocity, coefficientOfRestitution);
-    EXPECT_EQ(physics.balls[0].radius, radius);
-    EXPECT_EQ(physics.balls[0].mass, mass);
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[0].position, position);
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[0].velocity, velocity);
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[0].acceleration, accelerationExpected);
-    EXPECT_EQ(physics.balls[0].coefficientOfRestitution, coefficientOfRestitution);
+    EXPECT_EQ(physics.get_ball_ptr(0)->radius, radius);
+    EXPECT_EQ(physics.get_ball_ptr(0)->mass, mass);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(0)->position, position);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(0)->velocity, velocity);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(0)->acceleration, accelerationExpected);
+    EXPECT_EQ(physics.get_ball_ptr(0)->coefficientOfRestitution, coefficientOfRestitution);
 }
 
 TEST(PhysicsTests, WhenAddingMultipleBalls_ExpectCorrectInitializationOfAllBalls)
@@ -165,13 +165,13 @@ TEST(PhysicsTests, WhenAddingMultipleBalls_ExpectCorrectInitializationOfAllBalls
 
     for(int index{0}; index < numberOfBalls; index++)
     {
-        EXPECT_EQ(physics.balls[index].radius, radius);
-        EXPECT_EQ(physics.balls[index].mass, mass);
-        EXPECT_EQ(physics.balls[index].color, color);
-        EXPECT_VECTOR3_FLOAT_EQ(physics.balls[index].position, position);
-        EXPECT_VECTOR3_FLOAT_EQ(physics.balls[index].velocity, velocity);
-        EXPECT_VECTOR3_FLOAT_EQ(physics.balls[index].acceleration, accelerationExpected);
-        EXPECT_EQ(physics.balls[index].coefficientOfRestitution, coefficientOfRestitution);
+        EXPECT_EQ(physics.get_ball_ptr(index)->radius, radius);
+        EXPECT_EQ(physics.get_ball_ptr(index)->mass, mass);
+        EXPECT_EQ(physics.get_ball_ptr(index)->color, color);
+        EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(index)->position, position);
+        EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(index)->velocity, velocity);
+        EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(index)->acceleration, accelerationExpected);
+        EXPECT_EQ(physics.get_ball_ptr(index)->coefficientOfRestitution, coefficientOfRestitution);
     }
 }
 
@@ -195,9 +195,9 @@ TEST(PhysicsTests, WhenUpdatingGravityPhysicsOverTimeStep_ExpectCorrectPosition)
     Eigen::Vector3f velocityExpected = velocity + accelerationExpected*deltaTime;
     Eigen::Vector3f positionExpected = position + velocityExpected*deltaTime + 0.5*accelerationExpected*pow(deltaTime, 2);
 
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[0].acceleration, accelerationExpected);
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[0].velocity, velocityExpected);
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[0].position, positionExpected);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(0)->acceleration, accelerationExpected);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(0)->velocity, velocityExpected);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(0)->position, positionExpected);
 }
 
 TEST(PhysicsTests, WhenUpdatingSequentialBallsTwoTimeSteps_ExpectCorrectPositions)
@@ -229,13 +229,13 @@ TEST(PhysicsTests, WhenUpdatingSequentialBallsTwoTimeSteps_ExpectCorrectPosition
     Eigen::Vector3f velocityExpected2 = velocity + accelerationExpected*deltaTime;
     Eigen::Vector3f positionExpected2 = position + velocityExpected2*deltaTime + 0.5*accelerationExpected*pow(deltaTime, 2);
 
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[0].acceleration, accelerationExpected);
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[0].velocity, velocityExpected1);
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[0].position, positionExpected1);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(0)->acceleration, accelerationExpected);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(0)->velocity, velocityExpected1);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(0)->position, positionExpected1);
 
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[1].acceleration, accelerationExpected);
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[1].velocity, velocityExpected2);
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[1].position, positionExpected2);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(1)->acceleration, accelerationExpected);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(1)->velocity, velocityExpected2);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(1)->position, positionExpected2);
 }
 
 TEST(PhysicsTests, WhenUpdatingGroundBallCollision_ExpectCorrectPositionAndOppositeVelocity)
@@ -256,11 +256,11 @@ TEST(PhysicsTests, WhenUpdatingGroundBallCollision_ExpectCorrectPositionAndOppos
 
     Eigen::Vector3f accelerationExpected{0, 0, -9.81};
     Eigen::Vector3f velocityExpected{0, 0, -velocity[2]};
-    Eigen::Vector3f positionExpected{0, 0, physics.balls[0].radius};
+    Eigen::Vector3f positionExpected{0, 0, physics.get_ball_ptr(0)->radius};
 
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[0].acceleration, accelerationExpected);
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[0].velocity, velocityExpected);
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[0].position, positionExpected);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(0)->acceleration, accelerationExpected);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(0)->velocity, velocityExpected);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(0)->position, positionExpected);
 }
 
 TEST(PhysicsTests, WhenUpdatingBallCollisionInGround_ExpectRadiusPositionAboveGroundAndOppositeVelocity)
@@ -281,11 +281,11 @@ TEST(PhysicsTests, WhenUpdatingBallCollisionInGround_ExpectRadiusPositionAboveGr
 
     Eigen::Vector3f accelerationExpected{0, 0, -9.81};
     Eigen::Vector3f velocityExpected{0, 0, -velocity[2]};
-    Eigen::Vector3f positionExpected{0, 0, physics.balls[0].radius};
+    Eigen::Vector3f positionExpected{0, 0, physics.get_ball_ptr(0)->radius};
 
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[0].acceleration, accelerationExpected);
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[0].velocity, velocityExpected);
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[0].position, positionExpected);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(0)->acceleration, accelerationExpected);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(0)->velocity, velocityExpected);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(0)->position, positionExpected);
 }
 
 TEST(PhysicsTests, WhenUpdatingBallBelowGround_ExpectRadiusPositionAboveGroundAndOppositeVelocity)
@@ -306,11 +306,11 @@ TEST(PhysicsTests, WhenUpdatingBallBelowGround_ExpectRadiusPositionAboveGroundAn
 
     Eigen::Vector3f accelerationExpected{0, 0, -9.81};
     Eigen::Vector3f velocityExpected{0, 0, -velocity[2]};
-    Eigen::Vector3f positionExpected{0, 0, physics.balls[0].radius};
+    Eigen::Vector3f positionExpected{0, 0, physics.get_ball_ptr(0)->radius};
 
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[0].acceleration, accelerationExpected);
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[0].velocity, velocityExpected);
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[0].position, positionExpected);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(0)->acceleration, accelerationExpected);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(0)->velocity, velocityExpected);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(0)->position, positionExpected);
 }
 
 TEST(PhysicsTests, WhenUpdatingBallGroundCollisionWithNonTrivialCoefficientOfRestitution_ExpectRadiusPositionAboveGroundAndDepletedOppositeVelocity)
@@ -331,11 +331,11 @@ TEST(PhysicsTests, WhenUpdatingBallGroundCollisionWithNonTrivialCoefficientOfRes
 
     Eigen::Vector3f accelerationExpected{0, 0, -9.81};
     Eigen::Vector3f velocityExpected{0, 0, -coefficientOfRestitution*velocity[2]};
-    Eigen::Vector3f positionExpected{0, 0, physics.balls[0].radius};
+    Eigen::Vector3f positionExpected{0, 0, physics.get_ball_ptr(0)->radius};
 
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[0].acceleration, accelerationExpected);
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[0].velocity, velocityExpected);
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[0].position, positionExpected);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(0)->acceleration, accelerationExpected);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(0)->velocity, velocityExpected);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(0)->position, positionExpected);
 }
 
 TEST(PhysicsTests, WhenUpdatingBallXWallCollisionWithNonTrivialCoefficientOfRestitution_ExpectRadiusPositionInsideBoxAndDepletedOppositeVelocity)
@@ -356,11 +356,11 @@ TEST(PhysicsTests, WhenUpdatingBallXWallCollisionWithNonTrivialCoefficientOfRest
 
     Eigen::Vector3f accelerationExpected{0, 0, -9.81};
     Eigen::Vector3f velocityExpected{-coefficientOfRestitution*velocity[0], 0, 0};
-    Eigen::Vector3f positionExpected{(physics.boxBoundSize-physics.balls[0].radius), 0, 10};
+    Eigen::Vector3f positionExpected{(physics.get_box_size()-physics.get_ball_ptr(0)->radius), 0, 10};
 
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[0].acceleration, accelerationExpected);
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[0].velocity, velocityExpected);
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[0].position, positionExpected);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(0)->acceleration, accelerationExpected);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(0)->velocity, velocityExpected);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(0)->position, positionExpected);
 }
 
 TEST(PhysicsTests, WhenUpdatingBallYWallCollisionWithNonTrivialCoefficientOfRestitution_ExpectRadiusPositionInsideBoxAndDepletedOppositeVelocity)
@@ -381,11 +381,11 @@ TEST(PhysicsTests, WhenUpdatingBallYWallCollisionWithNonTrivialCoefficientOfRest
 
     Eigen::Vector3f accelerationExpected{0, 0, -9.81};
     Eigen::Vector3f velocityExpected{0, -coefficientOfRestitution*velocity[1], 0};
-    Eigen::Vector3f positionExpected{0, -(physics.boxBoundSize-physics.balls[0].radius), 10};
+    Eigen::Vector3f positionExpected{0, -(physics.get_box_size()-physics.get_ball_ptr(0)->radius), 10};
 
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[0].acceleration, accelerationExpected);
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[0].velocity, velocityExpected);
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[0].position, positionExpected);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(0)->acceleration, accelerationExpected);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(0)->velocity, velocityExpected);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(0)->position, positionExpected);
 }
 
 TEST(PhysicsTests, WhenUpdatingBalltoBallCollisionWithTrivialCoefficientOfRestitution_ExpectPositionChangeToRadiusAndCorrectVelocity)
@@ -425,13 +425,13 @@ TEST(PhysicsTests, WhenUpdatingBalltoBallCollisionWithTrivialCoefficientOfRestit
     Eigen::Vector3f velocity2Expected = coefficientOfRestitution2*(velocity2 - 2*mass1/totalMass*(-velocityDifference).dot(-positionDifference)/pow(positionDifference.norm(), 2)*(-positionDifference));
     Eigen::Vector3f position2Expected = position1 - positionDifference/offsetFromBall*(radius1 + radius2);;
 
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[0].acceleration, accelerationExpected);
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[0].velocity, velocity1Expected);
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[0].position, position1Expected);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(0)->acceleration, accelerationExpected);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(0)->velocity, velocity1Expected);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(0)->position, position1Expected);
 
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[1].acceleration, accelerationExpected);
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[1].velocity, velocity2Expected);
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[1].position, position2Expected);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(1)->acceleration, accelerationExpected);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(1)->velocity, velocity2Expected);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(1)->position, position2Expected);
 }
 
 TEST(PhysicsTests, WhenUpdatingBalltoBallWithNoCollision_ExpectNoChange)
@@ -466,13 +466,13 @@ TEST(PhysicsTests, WhenUpdatingBalltoBallWithNoCollision_ExpectNoChange)
     Eigen::Vector3f velocity2Expected = velocity2;
     Eigen::Vector3f position2Expected = position2;
 
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[0].acceleration, accelerationExpected);
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[0].velocity, velocity1Expected);
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[0].position, position1Expected);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(0)->acceleration, accelerationExpected);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(0)->velocity, velocity1Expected);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(0)->position, position1Expected);
 
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[1].acceleration, accelerationExpected);
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[1].velocity, velocity2Expected);
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[1].position, position2Expected);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(1)->acceleration, accelerationExpected);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(1)->velocity, velocity2Expected);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(1)->position, position2Expected);
 }
 
 TEST(PhysicsTests, WhenAddingBalls_ExpectIncreasedBallCount)
@@ -490,7 +490,7 @@ TEST(PhysicsTests, WhenAddingBalls_ExpectIncreasedBallCount)
     for(int count{0}; count<numberOfBalls; count++)
         physics.add_ball(radius1, mass1, color1, position1, velocity1, coefficientOfRestitution1);
 
-    EXPECT_EQ(physics.ballCount, numberOfBalls);
+    EXPECT_EQ(physics.get_ball_count(), numberOfBalls);
 }
 
 TEST(PhysicsTests, WhenAddingBallsOverMaxLimit_ExpectMaxBallCount)
@@ -503,12 +503,12 @@ TEST(PhysicsTests, WhenAddingBallsOverMaxLimit_ExpectMaxBallCount)
     Eigen::Vector3f position{0, 0, 100};
     Eigen::Vector3f velocity{0, 10, 0};
     float coefficientOfRestitution{1.0};
-    unsigned int numberOfBalls{physics.maxBallCount+10};
+    unsigned int numberOfBalls{physics.get_max_ball_count()+10};
 
     for(int count{0}; count<numberOfBalls; count++)
         physics.add_ball(radius, mass, color, position, velocity, coefficientOfRestitution);
 
-    EXPECT_EQ(physics.ballCount, physics.maxBallCount);
+    EXPECT_EQ(physics.get_ball_count(), physics.get_max_ball_count());
 }
 
 TEST(PhysicsTests, WhenReplacingBallAtSpecificIndex_ExpectCorrectBallParametersAtIndex)
@@ -522,7 +522,7 @@ TEST(PhysicsTests, WhenReplacingBallAtSpecificIndex_ExpectCorrectBallParametersA
     Eigen::Vector3f velocity{0, 10, 0};
     float coefficientOfRestitution{1.0};
 
-    for(int count{0}; count<physics.maxBallCount; count++)
+    for(int count{0}; count<physics.get_max_ball_count(); count++)
         physics.add_ball(radius, mass, color, position, velocity, coefficientOfRestitution);
 
     unsigned int replaceIndex{10};
@@ -536,13 +536,13 @@ TEST(PhysicsTests, WhenReplacingBallAtSpecificIndex_ExpectCorrectBallParametersA
     float newCoefficientOfRestitution{0.5};
     physics.update_ball(replaceIndex, newRadius, newMass, newColor, newPosition, newVelocity, newAcceleration, newCoefficientOfRestitution);
 
-    EXPECT_EQ(physics.balls[replaceIndex].radius, newRadius);
-    EXPECT_EQ(physics.balls[replaceIndex].mass, newMass);
-    EXPECT_EQ(physics.balls[replaceIndex].color, newColor);
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[replaceIndex].position, newPosition);
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[replaceIndex].velocity, newVelocity);
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[replaceIndex].acceleration, newAcceleration);
-    EXPECT_EQ(physics.balls[replaceIndex].coefficientOfRestitution, newCoefficientOfRestitution);
+    EXPECT_EQ(physics.get_ball_ptr(replaceIndex)->radius, newRadius);
+    EXPECT_EQ(physics.get_ball_ptr(replaceIndex)->mass, newMass);
+    EXPECT_EQ(physics.get_ball_ptr(replaceIndex)->color, newColor);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(replaceIndex)->position, newPosition);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(replaceIndex)->velocity, newVelocity);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(replaceIndex)->acceleration, newAcceleration);
+    EXPECT_EQ(physics.get_ball_ptr(replaceIndex)->coefficientOfRestitution, newCoefficientOfRestitution);
 }
 
 TEST(PhysicsTests, WhenAddingBallOverMaxLimit_ExpectCorrectBallReplacement)
@@ -566,23 +566,23 @@ TEST(PhysicsTests, WhenAddingBallOverMaxLimit_ExpectCorrectBallReplacement)
     Eigen::Vector3f accelerationExpected{0, 0, -9.81};
 
     int overCount{10};
-    unsigned int numberOfBalls{physics.maxBallCount+overCount};
+    unsigned int numberOfBalls{physics.get_max_ball_count()+overCount};
 
     for(int count{0}; count<numberOfBalls; count++)
     {
-        if(count < physics.maxBallCount)
+        if(count < physics.get_max_ball_count())
             physics.add_ball(radius1, mass1, color1, position1, velocity1, coefficientOfRestitution1);
         else
             physics.add_ball(radius2, mass2, color2, position2, velocity2, coefficientOfRestitution2);
     }
 
-    EXPECT_EQ(physics.balls[overCount-1].radius, radius2);
-    EXPECT_EQ(physics.balls[overCount-1].mass, mass2);
-    EXPECT_EQ(physics.balls[overCount-1].color, color2);
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[overCount-1].position, position2);
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[overCount-1].velocity, velocity2);
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[overCount-1].acceleration, accelerationExpected);
-    EXPECT_EQ(physics.balls[overCount-1].coefficientOfRestitution, coefficientOfRestitution2);
+    EXPECT_EQ(physics.get_ball_ptr(overCount-1)->radius, radius2);
+    EXPECT_EQ(physics.get_ball_ptr(overCount-1)->mass, mass2);
+    EXPECT_EQ(physics.get_ball_ptr(overCount-1)->color, color2);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(overCount-1)->position, position2);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(overCount-1)->velocity, velocity2);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(overCount-1)->acceleration, accelerationExpected);
+    EXPECT_EQ(physics.get_ball_ptr(overCount-1)->coefficientOfRestitution, coefficientOfRestitution2);
 }
 
 TEST(PhysicsTests, WhenBallIsMovingWithFluidDensity_ExpectDampedBallAcceleration)
@@ -604,11 +604,11 @@ TEST(PhysicsTests, WhenBallIsMovingWithFluidDensity_ExpectDampedBallAcceleration
 
     Eigen::Vector3f accelerationExpected{0, 0, -9.81};
     float velocityMagnitude = velocity.norm();
-    Eigen::Vector3f dragForce = -(0.5*fluidDensity*pow(velocityMagnitude, 2)*physics.dragCoefficient*(M_PI*pow(radius, 2)))/mass*velocity/velocityMagnitude;
+    Eigen::Vector3f dragForce = -(0.5*fluidDensity*pow(velocityMagnitude, 2)*physics.get_drag_coefficient()*(M_PI*pow(radius, 2)))/mass*velocity/velocityMagnitude;
 
     accelerationExpected += dragForce;
 
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[0].acceleration, accelerationExpected);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(0)->acceleration, accelerationExpected);
 }
 
 TEST(PhysicsTests, WhenBallNotMovingWithFluidDensity_ExpectNoChange)
@@ -630,7 +630,37 @@ TEST(PhysicsTests, WhenBallNotMovingWithFluidDensity_ExpectNoChange)
 
     Eigen::Vector3f accelerationExpected{0, 0, -9.81};
 
-    EXPECT_VECTOR3_FLOAT_EQ(physics.balls[0].acceleration, accelerationExpected);
+    EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(0)->acceleration, accelerationExpected);
+}
+
+TEST(PhysicsTests, WhenRemovingBall_ExpectReducedBallCount)
+{
+    BallPhysics physics{BallPhysics()};
+
+    float radius{4};
+    float mass{5};
+    unsigned int color{128};
+    Eigen::Vector3f position{0, 0, 100};
+    Eigen::Vector3f velocity{0, 0, 0};
+    float coefficientOfRestitution{1.0};
+
+    int numberOfBallsToAdd{20};
+    for(int ballNumber{0}; ballNumber<numberOfBallsToAdd; ballNumber++)
+        physics.add_ball(radius, mass, color, position, velocity, coefficientOfRestitution);
+    physics.remove_ball();
+
+    EXPECT_EQ(physics.get_ball_count(), numberOfBallsToAdd-1);
+//    EXPECT_EQ(physics.balls.size(), numberOfBallsToAdd-1);
+}
+
+TEST(PhysicsTests, WhenRemovingBallWhenNoBalls_ExpectNoBalls)
+{
+    BallPhysics physics{BallPhysics()};
+
+    physics.remove_ball();
+
+    EXPECT_EQ(physics.get_ball_count(), 0);
+//    EXPECT_EQ(physics.balls.size(), 0);
 }
 
 TEST(PhysicsTests, WhenClearingBalls_ExpectNoBallsAndNoCount)
@@ -649,8 +679,8 @@ TEST(PhysicsTests, WhenClearingBalls_ExpectNoBallsAndNoCount)
         physics.add_ball(radius, mass, color, position, velocity, coefficientOfRestitution);
     physics.clear_balls();
 
-    EXPECT_EQ(physics.ballCount, 0);
-    EXPECT_EQ(physics.balls.size(), 0);
+    EXPECT_EQ(physics.get_ball_count(), 0);
+//    EXPECT_EQ(physics.balls.size(), 0);
 }
 
 TEST(PhysicsTests, WhenClearingNoBalls_ExpectNoBallsAndNoCount)
@@ -658,6 +688,6 @@ TEST(PhysicsTests, WhenClearingNoBalls_ExpectNoBallsAndNoCount)
     BallPhysics physics{BallPhysics()};
     physics.clear_balls();
 
-    EXPECT_EQ(physics.ballCount, 0);
-    EXPECT_EQ(physics.balls.size(), 0);
+    EXPECT_EQ(physics.get_ball_count(), 0);
+//    EXPECT_EQ(physics.balls.size(), 0);
 }

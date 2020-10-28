@@ -14,7 +14,3 @@ Ball::Ball(float radiusInit, float massInit, unsigned int colorInit, Eigen::Vect
     coefficientOfRestitution{coefficientOfRestitutionInit}
 {
 }
-
-Ball::~Ball()
-{
-}
