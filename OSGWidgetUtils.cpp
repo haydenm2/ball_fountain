@@ -1,5 +1,5 @@
 #include "OSGWidgetUtils.hpp"
-#include <iostream>
+
 namespace osgwidgetutils
 {
 
@@ -9,8 +9,8 @@ osg::Vec4 hue_to_osg_rgba_decimal(int hue)
     float g{0};
     float b{0};
     float alpha{1};
-    float hueSegment{hue/60.0};
-    float x{1 - fabs(fmod(hueSegment, 2)-1)};
+    float hueSegment{float(hue/60.0)};
+    float x{float(1 - fabs(fmod(hueSegment, 2)-1))};
     if(0<=hueSegment && hueSegment<1)
     {
         r = 1;

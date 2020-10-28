@@ -22,7 +22,7 @@ public:
     virtual void operator()(osg::Node* node, osg::NodeVisitor* nodeVisitor);
 
 protected:
-    BallPhysics *physics;
+    BallPhysics *physicsPtr;
 
 };
 

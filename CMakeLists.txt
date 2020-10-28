@@ -8,7 +8,8 @@ find_package(GTest REQUIRED)
 find_package(Eigen3 3.3 REQUIRED)
 
 include_directories(${GTEST_INCLUDE_DIRS})
-include_directories( ${OPENSCENEGRAPH_INCLUDE_DIRS} )
+include_directories(${OPENSCENEGRAPH_INCLUDE_DIRS})
+include_directories(${OSGQOPENGL_INCLUDE_DIRS})
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED 1)
@@ -28,12 +29,16 @@ add_library(${PHYSICS_NAME} STATIC
         )
 
 add_executable(${TEST_NAME}
-    UnitTest.cpp
+    ballUnitTests.cpp
+    ballPhysicsUnitTests.cpp
+    osgWidgetUtilsUnitTests.cpp
+    unitTestUtils.cpp
+    unitTestUtils.hpp
     OSGWidgetUtils.hpp
     OSGWidgetUtils.cpp
     )
 
-set(GUI_SOURCE
+add_executable(${PROJECT_NAME}
     Main.cpp
     MainWindow.cpp
     MainWindow.hpp
@@ -44,10 +49,6 @@ set(GUI_SOURCE
     OSGWidgetUtils.cpp
     SphereUpdateCallback.cpp
     SphereUpdateCallback.hpp
-    )
-
-add_executable(${PROJECT_NAME}
-    ${GUI_SOURCE}
     )
 
 target_link_libraries(${PROJECT_NAME}
