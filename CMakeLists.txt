@@ -19,7 +19,7 @@ set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
 set(PHYSICS_NAME BallPhysics)
-set(TEST_NAME ${PHYSICS_NAME}_UnitTest)
+set(TEST_NAME ${PROJECT_NAME}_UnitTests)
 
 add_library(${PHYSICS_NAME} STATIC
         BallPhysics.hpp

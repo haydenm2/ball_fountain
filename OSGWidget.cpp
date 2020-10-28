@@ -128,8 +128,7 @@ void OSGWidget::add_cylinder()
     float cylinderHeight{fountainHeightScale*radius};
     osg::Vec3 initialCylinderPosition{0.f, 0.f, float(cylinderHeight/2.0)};
     osg::Vec4 cylinderColor{0.5f, 0.5f, 0.5f, 1.f};
-    osg::Vec3 zeros{0.f, 0.f, 0.f};
-    osg::Cylinder* cylinder = new osg::Cylinder(zeros, cylinderRadius, cylinderHeight);
+    osg::Cylinder* cylinder = new osg::Cylinder(osg::Vec3{0.f, 0.f, 0.f}, cylinderRadius, cylinderHeight);
     osg::ShapeDrawable* sdCylinder = new osg::ShapeDrawable(cylinder);
     sdCylinder->setColor(cylinderColor);
     sdCylinder->setName("Cylinder");
@@ -194,15 +193,14 @@ void OSGWidget::configure_update()
 
 void OSGWidget::add_ball()
 {
-    osg::Vec3 zeros{0.f, 0.f, 0.f};
-    osg::Vec3 initialBallPosition{0.f, 0.f, 3*radius};
-    osg::Vec4 ballColor{osgwidgetutils::hue_to_osg_rgba_decimal(color)};
     Eigen::Vector3f velocityWithNoise{osgwidgetutils::get_small_random_float(), osgwidgetutils::get_small_random_float(), velocity[2]};
     physics.add_ball(radius, mass, color, position, velocityWithNoise, coefficientOfRestitution);
 
-    osg::Sphere* ball = new osg::Sphere(zeros, radius);
+    osg::Vec3 initialBallPosition{0.f, 0.f, 3*radius};
+    osg::Vec4 initialBallColor{osgwidgetutils::hue_to_osg_rgba_decimal(color)};
+    osg::Sphere* ball = new osg::Sphere(osg::Vec3{0.f, 0.f, 0.f}, radius);
     osg::ShapeDrawable* sdBall = new osg::ShapeDrawable(ball);
-    sdBall->setColor(ballColor);
+    sdBall->setColor(initialBallColor);
     sdBall->setName("Sphere");
     osg::Geode* geodeBall = new osg::Geode;
     geodeBall->addDrawable(sdBall);
