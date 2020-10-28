@@ -66,3 +66,9 @@ TEST(OSGUtilsTests, WhenConvertingOutOfRangeHueToRGB_ExpectBlack)
     osg::Vec4 rgbExpected{osg::Vec4(0.0f, 0.0f, 0.0f, 1.0f)};
     EXPECT_OSG_VECTOR4_EQ(rgbOutput, rgbExpected);
 }
+
+TEST(OSGUtilsTests, WhenRequestingSmallRandomNumber_ExpectSmallValue)
+{
+    float randomValue = osgwidgetutils::get_small_random_float();
+    EXPECT_NEAR(randomValue, 0.0, 0.01);
+}

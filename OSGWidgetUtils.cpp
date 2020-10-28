@@ -57,4 +57,10 @@ osg::Vec4 hue_to_osg_rgba_decimal(int hue)
     return osg::Vec4(r, g, b, alpha);
 }
 
+float get_small_random_float()
+{
+    float maxMagnitude{0.01};
+    return float(maxMagnitude*(std::rand()%200-100)/100.0);
+}
+
 }

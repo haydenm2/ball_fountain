@@ -198,7 +198,7 @@ void OSGWidget::add_ball()
     osg::Vec3 initialBallPosition{0.f, 0.f, 3*radius};
     osg::Vec4 ballColor{osgwidgetutils::hue_to_osg_rgba_decimal(color)};
     position[2] = fountainHeightScale*radius;
-    Eigen::Vector3f velocityWithNoise{float(0.1*(std::rand()%200-100)/100.0), float(0.1*(std::rand()%200-100)/100.0), velocity[2]};
+    Eigen::Vector3f velocityWithNoise{osgwidgetutils::get_small_random_float(), osgwidgetutils::get_small_random_float(), velocity[2]};
     physics.add_ball(radius, mass, color, position, velocityWithNoise, coefficientOfRestitution);
 
     osg::Sphere* ball = new osg::Sphere(zeros, radius);
@@ -221,7 +221,7 @@ void OSGWidget::add_ball()
 
 void OSGWidget::replace_ball()
 {
-    Eigen::Vector3f velocityWithNoise{float(0.1*(std::rand()%200-100)/100.0), float(0.1*(std::rand()%200-100)/100.0), velocity[2]};
+    Eigen::Vector3f velocityWithNoise{osgwidgetutils::get_small_random_float(), osgwidgetutils::get_small_random_float(), velocity[2]};
     position[2] = fountainHeightScale*radius;
     physics.add_ball(radius, mass, color, position, velocityWithNoise, coefficientOfRestitution);
 }
