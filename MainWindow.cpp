@@ -21,52 +21,51 @@ void MainWindow::on_actionExit_triggered()
 void MainWindow::on_horizontalSlider_BallMass_valueChanged(int newMass)
 {
     OSGWidget *osgWidget = qobject_cast<OSGWidget *>(findChild<QObject *>("graphicsView"));
-    osgWidget->mass = newMass;
+    osgWidget->set_mass(newMass);
 }
 
 void MainWindow::on_horizontalSlider_BallSize_valueChanged(int newRadius)
 {
     OSGWidget *osgWidget = qobject_cast<OSGWidget *>(findChild<QObject *>("graphicsView"));
-    osgWidget->radius = newRadius/100.0;
+    osgWidget->set_radius(newRadius/100.0);
     osgWidget->update_nozzle();
 }
 
 void MainWindow::on_horizontalSlider_BallVelocity_valueChanged(int newVelocity)
 {
     OSGWidget *osgWidget = qobject_cast<OSGWidget *>(findChild<QObject *>("graphicsView"));
-    osgWidget->velocity[2] = newVelocity;
+    osgWidget->set_velocity(newVelocity);
 }
 
 void MainWindow::on_horizontalSlider_BallColor_valueChanged(int newColor)
 {
     OSGWidget *osgWidget = qobject_cast<OSGWidget *>(findChild<QObject *>("graphicsView"));
-    osgWidget->color = newColor;
+    osgWidget->set_color(newColor);
 }
 
 void MainWindow::on_horizontalSlider_BallFrequency_valueChanged(int newFrequency)
 {
     OSGWidget *osgWidget = qobject_cast<OSGWidget *>(findChild<QObject *>("graphicsView"));
-    osgWidget->ballsPerSecond = newFrequency;
+    osgWidget->set_ball_rate(newFrequency);
     osgWidget->update_ball_update_rate();
 }
 
 void MainWindow::on_horizontalSlider_FluidViscosity_valueChanged(int newFluidDensity)
 {
     OSGWidget *osgWidget = qobject_cast<OSGWidget *>(findChild<QObject *>("graphicsView"));
-    osgWidget->fluidDensity = newFluidDensity/10.0;
-    osgWidget->physics.set_fluid_density(newFluidDensity/10.0);
+    osgWidget->set_fluid_density(newFluidDensity/10.0);
 }
 
 void MainWindow::on_horizontalSlider_Gravity_valueChanged(int newGravity)
 {
     OSGWidget *osgWidget = qobject_cast<OSGWidget *>(findChild<QObject *>("graphicsView"));
-    osgWidget->physics.set_gravity(-9.81*(newGravity/10.0));
+    osgWidget->set_gravity(-9.81*(newGravity/10.0));
 }
 
 void MainWindow::on_horizontalSlider_BallBounciness_valueChanged(int newCoefficient)
 {
     OSGWidget *osgWidget = qobject_cast<OSGWidget *>(findChild<QObject *>("graphicsView"));
-    osgWidget->coefficientOfRestitution = newCoefficient/100.0;
+    osgWidget->set_coefficient_of_restitution(newCoefficient/100.0);
 }
 
 void MainWindow::on_pushButton_DefaultParameters_clicked()
@@ -105,7 +104,7 @@ void MainWindow::on_pushButton_Reset_clicked()
 void MainWindow::on_pushButton_Pause_toggled(bool checked)
 {
     OSGWidget *osgWidget = qobject_cast<OSGWidget *>(findChild<QObject *>("graphicsView"));
-    osgWidget->pauseFlag = checked;
+    osgWidget->set_pause_flag(checked);
     QPushButton *pausePlayButton = qobject_cast<QPushButton *>(findChild<QObject *>("pushButton_Pause"));
     if(checked)
         pausePlayButton->setText(QString("Play"));

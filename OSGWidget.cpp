@@ -249,3 +249,109 @@ void OSGWidget::update_nozzle()
     osg::Cylinder *nozzle = new osg::Cylinder(osg::Vec3(0.f, 0.f, 0.f), radius, radius*fountainHeightScale);
     nozzleShapeDrawable->setShape(nozzle);
 }
+
+BallPhysics* OSGWidget::get_physics_ptr()
+{
+    return &(this->physics);
+}
+
+float OSGWidget::get_ground_plane_size()
+{
+    return this->groundPlaneSize;
+}
+
+float OSGWidget::get_fluid_density()
+{
+    return this->fluidDensity;
+}
+
+float OSGWidget::get_radius()
+{
+    return this->radius;
+}
+
+float OSGWidget::get_mass()
+{
+    return this->mass;
+}
+
+unsigned int OSGWidget::get_color()
+{
+    return this->color;
+}
+
+Eigen::Vector3f OSGWidget::get_position()
+{
+    return this->position;
+}
+
+Eigen::Vector3f OSGWidget::get_velocity()
+{
+    return this->velocity;
+}
+
+float OSGWidget::get_coefficient_of_restitution()
+{
+    return this->coefficientOfRestitution;
+}
+
+float OSGWidget::get_ball_rate()
+{
+    return this->ballsPerSecond;
+}
+
+bool OSGWidget::is_paused()
+{
+    return this->pauseFlag;
+}
+
+void OSGWidget::set_fluid_density(float newDensity)
+{
+    this->get_physics_ptr()->set_fluid_density(newDensity/10.0);
+}
+
+void OSGWidget::set_gravity(float newGravity)
+{
+    this->get_physics_ptr()->set_gravity(newGravity);
+}
+
+void OSGWidget::set_radius(float newRadius)
+{
+    this->radius = newRadius;
+}
+
+void OSGWidget::set_mass(float newMass)
+{
+    this->mass = newMass;
+}
+
+void OSGWidget::set_color(unsigned int newColor)
+{
+    this->color = newColor;
+}
+
+void OSGWidget::set_position(Eigen::Vector3f newPosition)
+{
+    this->position = newPosition;
+}
+
+void OSGWidget::set_velocity(float newVelocity)
+{
+    this->velocity[2] = newVelocity;
+}
+
+void OSGWidget::set_coefficient_of_restitution(float newCoefficient)
+{
+    this->coefficientOfRestitution = newCoefficient;
+}
+
+void OSGWidget::set_ball_rate(float newRate)
+{
+    this->ballsPerSecond = newRate;
+}
+
+void OSGWidget::set_pause_flag(bool pauseState)
+{
+    this->pauseFlag = pauseState;
+}
+

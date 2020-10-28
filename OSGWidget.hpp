@@ -46,21 +46,29 @@ public:
   void update_ball_update_rate();
   void update_nozzle();
 
-  float groundPlaneSize{10};
-  float fluidDensity{0.5};
-  BallPhysics physics{BallPhysics(groundPlaneSize, fluidDensity)};
-  float fountainHeightScale{3.0};
+  BallPhysics* get_physics_ptr();
 
-  float radius{0.5};
-  float mass{5};
-  unsigned int color{0};
-  Eigen::Vector3f position{0.0, 0.0, 0.0};
-  Eigen::Vector3f velocity{0.0, 0.0, 20.0};
-  float coefficientOfRestitution{0.7};
-  float ballsPerSecond{5.0};
+  float get_ground_plane_size();
+  float get_fluid_density();
+  float get_radius();
+  float get_mass();
+  unsigned int get_color();
+  Eigen::Vector3f get_position();
+  Eigen::Vector3f get_velocity();
+  float get_coefficient_of_restitution();
+  float get_ball_rate();
+  bool is_paused();
 
-  double framesPerSecond{30};
-  bool pauseFlag{true};
+  void set_fluid_density(float newDensity);
+  void set_gravity(float newGravityRatio);
+  void set_radius(float newRadius);
+  void set_mass(float newMass);
+  void set_color(unsigned int newColor);
+  void set_position(Eigen::Vector3f newPosition);
+  void set_velocity(float newVelocity);
+  void set_coefficient_of_restitution(float newCoefficient);
+  void set_ball_rate(float newRate);
+  void set_pause_flag(bool pauseState);
 
 protected:
   virtual void paintEvent( QPaintEvent* paintEvent );
@@ -77,12 +85,27 @@ protected:
   void add_ground_plane();
   void configure_update();
 
+  float groundPlaneSize{10};
+  float fluidDensity{0.5};
+  BallPhysics physics{BallPhysics(groundPlaneSize, fluidDensity)};
+  float fountainHeightScale{3.0};
+
+  float radius{0.5};
+  float mass{5};
+  unsigned int color{0};
+  Eigen::Vector3f position{0.0, 0.0, 0.0};
+  Eigen::Vector3f velocity{0.0, 0.0, 20.0};
+  float coefficientOfRestitution{0.7};
+  float ballsPerSecond{5.0};
+  bool pauseFlag{true};
+
 private:
   virtual void on_resize( int width, int height );
   osgGA::EventQueue* getEventQueue() const;
 
   int simulationUpdateTimerId{0};
   int ballUpdateTimerId{0};
+  double framesPerSecond{30};
 
   osg::ref_ptr<osgViewer::GraphicsWindowEmbedded> mGraphicsWindow;
   osg::ref_ptr<osgViewer::CompositeViewer> mViewer;

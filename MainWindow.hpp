@@ -18,10 +18,9 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
-public slots:
+private slots:
     void on_actionExit_triggered();
 
-private slots:
     void on_horizontalSlider_BallMass_valueChanged(int newMass);
 
     void on_horizontalSlider_BallSize_valueChanged(int newRadius);
