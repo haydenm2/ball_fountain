@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include "unitTestUtils.hpp"
+#include "UnitTestUtils.hpp"
 #include "BallPhysics.hpp"
 
 

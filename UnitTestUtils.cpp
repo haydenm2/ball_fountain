@@ -1,4 +1,4 @@
-#include "unitTestUtils.hpp"
+#include "UnitTestUtils.hpp"
 
 void EXPECT_VECTOR3_FLOAT_EQ(Eigen::Vector3f inputVector, Eigen::Vector3f truthVector)
 {

@@ -29,11 +29,11 @@ add_library(${PHYSICS_NAME} STATIC
         )
 
 add_executable(${TEST_NAME}
-    ballUnitTests.cpp
-    ballPhysicsUnitTests.cpp
-    osgWidgetUtilsUnitTests.cpp
-    unitTestUtils.cpp
-    unitTestUtils.hpp
+    BallUnitTests.cpp
+    BallPhysicsUnitTests.cpp
+    OSGWidgetUtilsUnitTests.cpp
+    UnitTestUtils.cpp
+    UnitTestUtils.hpp
     OSGWidgetUtils.hpp
     OSGWidgetUtils.cpp
     )

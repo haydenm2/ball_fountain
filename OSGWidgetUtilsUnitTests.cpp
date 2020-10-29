@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 #include "OSGWidgetUtils.hpp"
-#include "unitTestUtils.hpp"
+#include "UnitTestUtils.hpp"
 
 
 TEST(OSGUtilsTests, WhenConverting0HueToRGB_ExpectRed)
