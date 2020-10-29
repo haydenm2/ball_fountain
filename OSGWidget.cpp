@@ -39,10 +39,7 @@ void OSGWidget::timerEvent(QTimerEvent *event)
         }
         else if(event->timerId() == ballUpdateTimerId)
         {
-            if(physics.get_ball_count() < physics.get_max_ball_count())
-                add_ball();
-            else
-                replace_ball();
+            add_ball();
         }
     }
 }
@@ -124,8 +121,8 @@ void OSGWidget::create_viewer()
 
 void OSGWidget::add_cylinder()
 {
-    float cylinderRadius{radius};
-    float cylinderHeight{fountainHeightScale*radius};
+    float cylinderRadius{physics.get_new_ball_radius()};
+    float cylinderHeight{fountainHeightScale*physics.get_new_ball_radius()};
     osg::Vec3 initialCylinderPosition{0.f, 0.f, float(cylinderHeight/2.0)};
     osg::Vec4 cylinderColor{0.5f, 0.5f, 0.5f, 1.f};
     osg::Cylinder* cylinder = new osg::Cylinder(osg::Vec3{0.f, 0.f, 0.f}, cylinderRadius, cylinderHeight);
@@ -149,10 +146,10 @@ void OSGWidget::add_ground_plane()
 {
     osg::Vec4 groundPlaneColor{0.04f, 0.4f, 0.14f, 0.0f};
     osg::ref_ptr<osg::Vec3Array> groundPlaneVertices = new osg::Vec3Array;
-    groundPlaneVertices->push_back(osg::Vec3(-groundPlaneSize, -groundPlaneSize, 0.0f));
-    groundPlaneVertices->push_back(osg::Vec3(groundPlaneSize, -groundPlaneSize, 0.0f));
-    groundPlaneVertices->push_back(osg::Vec3(groundPlaneSize, groundPlaneSize, 0.0f));
-    groundPlaneVertices->push_back(osg::Vec3(-groundPlaneSize, groundPlaneSize, 0.0f));
+    groundPlaneVertices->push_back(osg::Vec3(-initialGroundPlaneSize, -initialGroundPlaneSize, 0.0f));
+    groundPlaneVertices->push_back(osg::Vec3(initialGroundPlaneSize, -initialGroundPlaneSize, 0.0f));
+    groundPlaneVertices->push_back(osg::Vec3(initialGroundPlaneSize, initialGroundPlaneSize, 0.0f));
+    groundPlaneVertices->push_back(osg::Vec3(-initialGroundPlaneSize, initialGroundPlaneSize, 0.0f));
     osg::ref_ptr<osg::Vec3Array> groundPlaneNormals = new osg::Vec3Array;
     groundPlaneNormals->push_back(osg::Vec3(0.0f, -1.0f, 0.0f));
     osg::ref_ptr<osg::Vec4Array> groundColor = new osg::Vec4Array;
@@ -193,33 +190,31 @@ void OSGWidget::configure_update()
 
 void OSGWidget::add_ball()
 {
-    Eigen::Vector3f velocityWithNoise{osgwidgetutils::get_small_random_float(), osgwidgetutils::get_small_random_float(), velocity[2]};
-    physics.add_ball(radius, mass, color, position, velocityWithNoise, coefficientOfRestitution);
+    Eigen::Vector3f noisyVelocity{osgwidgetutils::get_small_random_float(), osgwidgetutils::get_small_random_float(), physics.get_new_ball_velocity()[2]};
+    this->physics.set_new_ball_velocity(noisyVelocity);
+    physics.add_ball();
 
-    osg::Vec3 initialBallPosition{0.f, 0.f, 3*radius};
-    osg::Vec4 initialBallColor{osgwidgetutils::hue_to_osg_rgba_decimal(color)};
-    osg::Sphere* ball = new osg::Sphere(osg::Vec3{0.f, 0.f, 0.f}, radius);
-    osg::ShapeDrawable* sdBall = new osg::ShapeDrawable(ball);
-    sdBall->setColor(initialBallColor);
-    sdBall->setName("Sphere");
-    osg::Geode* geodeBall = new osg::Geode;
-    geodeBall->addDrawable(sdBall);
-    osg::StateSet* stateSetBall = geodeBall->getOrCreateStateSet();
-    osg::Material* materialBall = new osg::Material;
-    materialBall->setColorMode(osg::Material::AMBIENT_AND_DIFFUSE);
-    stateSetBall->setAttributeAndModes(materialBall, osg::StateAttribute::ON);
-    stateSetBall->setMode(GL_DEPTH_TEST, osg::StateAttribute::ON);
-    osg::PositionAttitudeTransform *transformBall = new osg::PositionAttitudeTransform;
-    transformBall->setPosition(initialBallPosition);
-    transformBall->setUpdateCallback(new SphereUpdateCallback(&physics));
-    transformBall->addChild(geodeBall);
-    this->mRoot->addChild(transformBall);
-}
-
-void OSGWidget::replace_ball()
-{
-    Eigen::Vector3f velocityWithNoise{osgwidgetutils::get_small_random_float(), osgwidgetutils::get_small_random_float(), velocity[2]};
-    physics.add_ball(radius, mass, color, position, velocityWithNoise, coefficientOfRestitution);
+    if(physics.get_ball_count() < physics.get_max_ball_count())
+    {
+        osg::Vec3 initialBallPosition{0.f, 0.f, 3*physics.get_new_ball_radius()};
+        osg::Vec4 initialBallColor{osgwidgetutils::hue_to_osg_rgba_decimal(physics.get_new_ball_color())};
+        osg::Sphere* ball = new osg::Sphere(osg::Vec3{0.f, 0.f, 0.f}, physics.get_new_ball_radius());
+        osg::ShapeDrawable* sdBall = new osg::ShapeDrawable(ball);
+        sdBall->setColor(initialBallColor);
+        sdBall->setName("Sphere");
+        osg::Geode* geodeBall = new osg::Geode;
+        geodeBall->addDrawable(sdBall);
+        osg::StateSet* stateSetBall = geodeBall->getOrCreateStateSet();
+        osg::Material* materialBall = new osg::Material;
+        materialBall->setColorMode(osg::Material::AMBIENT_AND_DIFFUSE);
+        stateSetBall->setAttributeAndModes(materialBall, osg::StateAttribute::ON);
+        stateSetBall->setMode(GL_DEPTH_TEST, osg::StateAttribute::ON);
+        osg::PositionAttitudeTransform *transformBall = new osg::PositionAttitudeTransform;
+        transformBall->setPosition(initialBallPosition);
+        transformBall->setUpdateCallback(new SphereUpdateCallback(&physics));
+        transformBall->addChild(geodeBall);
+        this->mRoot->addChild(transformBall);
+    }
 }
 
 void OSGWidget::clear_balls()
@@ -242,7 +237,7 @@ void OSGWidget::update_nozzle()
     osg::PositionAttitudeTransform *nozzleTransform = dynamic_cast<osg::PositionAttitudeTransform *> (this->mRoot->getChild(0));
     osg::Geode *nozzleGeode = nozzleTransform->getChild(0)->asGeode();
     osg::ShapeDrawable *nozzleShapeDrawable = dynamic_cast<osg::ShapeDrawable *> (nozzleGeode->getDrawable(0));
-    osg::Cylinder *nozzle = new osg::Cylinder(osg::Vec3(0.f, 0.f, 0.f), radius, radius*fountainHeightScale);
+    osg::Cylinder *nozzle = new osg::Cylinder(osg::Vec3(0.f, 0.f, 0.f), physics.get_new_ball_radius(), physics.get_new_ball_radius()*fountainHeightScale);
     nozzleShapeDrawable->setShape(nozzle);
 }
 
@@ -253,42 +248,42 @@ BallPhysics* OSGWidget::get_physics_ptr()
 
 float OSGWidget::get_ground_plane_size()
 {
-    return this->groundPlaneSize;
+    return this->initialGroundPlaneSize;
 }
 
 float OSGWidget::get_fluid_density()
 {
-    return this->fluidDensity;
+    return this->physics.get_fluid_density();
 }
 
 float OSGWidget::get_radius()
 {
-    return this->radius;
+    return this->physics.get_new_ball_radius();
 }
 
 float OSGWidget::get_mass()
 {
-    return this->mass;
+    return this->physics.get_new_ball_mass();
 }
 
 unsigned int OSGWidget::get_color()
 {
-    return this->color;
+    return this->physics.get_new_ball_color();
 }
 
 Eigen::Vector3f OSGWidget::get_position()
 {
-    return this->position;
+    return this->physics.get_new_ball_position();
 }
 
 Eigen::Vector3f OSGWidget::get_velocity()
 {
-    return this->velocity;
+    return this->physics.get_new_ball_velocity();
 }
 
 float OSGWidget::get_coefficient_of_restitution()
 {
-    return this->coefficientOfRestitution;
+    return this->physics.get_new_ball_coefficient_of_restitution();
 }
 
 float OSGWidget::get_ball_rate()
@@ -313,33 +308,29 @@ void OSGWidget::set_gravity(float newGravity)
 
 void OSGWidget::set_radius(float newRadius)
 {
-    this->radius = newRadius;
-    position[2] = fountainHeightScale*radius;
+    this->physics.set_new_ball_radius(newRadius);
+    this->physics.set_new_ball_height(fountainHeightScale*physics.get_new_ball_radius());
 }
 
 void OSGWidget::set_mass(float newMass)
 {
-    this->mass = newMass;
+    this->physics.set_new_ball_mass(newMass);
 }
 
 void OSGWidget::set_color(unsigned int newColor)
 {
-    this->color = newColor;
+    this->physics.set_new_ball_color(newColor);
 }
 
-void OSGWidget::set_position(Eigen::Vector3f newPosition)
+void OSGWidget::set_velocity(float newUpwardVelocity)
 {
-    this->position = newPosition;
-}
-
-void OSGWidget::set_velocity(float newVelocity)
-{
-    this->velocity[2] = newVelocity;
+    Eigen::Vector3f newVelocity{osgwidgetutils::get_small_random_float(), osgwidgetutils::get_small_random_float(), newUpwardVelocity};
+    this->physics.set_new_ball_velocity(newVelocity);
 }
 
 void OSGWidget::set_coefficient_of_restitution(float newCoefficient)
 {
-    this->coefficientOfRestitution = newCoefficient;
+    this->physics.set_new_ball_coefficient_of_restitution(newCoefficient);
 }
 
 void OSGWidget::set_ball_rate(float newRate)

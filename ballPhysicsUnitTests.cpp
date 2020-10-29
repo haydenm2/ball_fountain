@@ -15,7 +15,9 @@ TEST(PhysicsTests, WhenAddingBall_ExpectCorrectInitialization)
     Eigen::Vector3f accelerationExpected{0, 0, -9.81};
 
     BallPhysics physics;
-    physics.add_ball(radius, mass, color, position, velocity, coefficientOfRestitution);
+    physics.set_new_ball_parameters(radius, mass, color, position, velocity, coefficientOfRestitution);
+
+    physics.add_ball();
     EXPECT_EQ(physics.get_ball_ptr(0)->radius, radius);
     EXPECT_EQ(physics.get_ball_ptr(0)->mass, mass);
     EXPECT_VECTOR3_FLOAT_EQ(physics.get_ball_ptr(0)->position, position);
@@ -37,10 +39,11 @@ TEST(PhysicsTests, WhenAddingMultipleBalls_ExpectCorrectInitializationOfAllBalls
     Eigen::Vector3f accelerationExpected{0, 0, -9.81};
 
     BallPhysics physics;
+    physics.set_new_ball_parameters(radius, mass, color, position, velocity, coefficientOfRestitution);
 
     for(int index{0}; index < numberOfBalls; index++)
     {
-        physics.add_ball(radius, mass, color, position, velocity, coefficientOfRestitution);
+        physics.add_ball();
     }
 
     for(int index{0}; index < numberOfBalls; index++)
@@ -57,8 +60,6 @@ TEST(PhysicsTests, WhenAddingMultipleBalls_ExpectCorrectInitializationOfAllBalls
 
 TEST(PhysicsTests, WhenUpdatingGravityPhysicsOverTimeStep_ExpectCorrectPosition)
 {
-    BallPhysics physics;
-
     float radius{10};
     float mass{5};
     unsigned int color{128};
@@ -66,7 +67,10 @@ TEST(PhysicsTests, WhenUpdatingGravityPhysicsOverTimeStep_ExpectCorrectPosition)
     Eigen::Vector3f velocity{1, 1, 1};
     float coefficientOfRestitution{1.0};
 
-    physics.add_ball(radius, mass, color, position, velocity, coefficientOfRestitution);
+    BallPhysics physics;
+    physics.set_new_ball_parameters(radius, mass, color, position, velocity, coefficientOfRestitution);
+
+    physics.add_ball();
 
     float deltaTime{5};
     physics.update(deltaTime);
@@ -82,8 +86,6 @@ TEST(PhysicsTests, WhenUpdatingGravityPhysicsOverTimeStep_ExpectCorrectPosition)
 
 TEST(PhysicsTests, WhenUpdatingSequentialBallsTwoTimeSteps_ExpectCorrectPositions)
 {
-    BallPhysics physics;
-
     float radius{1};
     float mass{5};
     unsigned int color{128};
@@ -91,7 +93,10 @@ TEST(PhysicsTests, WhenUpdatingSequentialBallsTwoTimeSteps_ExpectCorrectPosition
     Eigen::Vector3f velocity{1, 1, 1};
     float coefficientOfRestitution{1.0};
 
-    physics.add_ball(radius, mass, color, position, velocity, coefficientOfRestitution);
+    BallPhysics physics;
+    physics.set_new_ball_parameters(radius, mass, color, position, velocity, coefficientOfRestitution);
+
+    physics.add_ball();
 
     float deltaTime{3};
     physics.update(deltaTime);
@@ -100,7 +105,7 @@ TEST(PhysicsTests, WhenUpdatingSequentialBallsTwoTimeSteps_ExpectCorrectPosition
     Eigen::Vector3f velocityExpected1 = velocity + accelerationExpected*deltaTime;
     Eigen::Vector3f positionExpected1 = position + velocityExpected1*deltaTime + 0.5*accelerationExpected*pow(deltaTime, 2);
 
-    physics.add_ball(radius, mass, color, position, velocity, coefficientOfRestitution);
+    physics.add_ball();
     physics.update(deltaTime);
 
     velocityExpected1 = velocityExpected1 + accelerationExpected*deltaTime;
@@ -120,8 +125,6 @@ TEST(PhysicsTests, WhenUpdatingSequentialBallsTwoTimeSteps_ExpectCorrectPosition
 
 TEST(PhysicsTests, WhenUpdatingGroundBallCollision_ExpectCorrectPositionAndOppositeVelocity)
 {
-    BallPhysics physics;
-
     float radius{2};
     float mass{5};
     unsigned int color{128};
@@ -129,7 +132,10 @@ TEST(PhysicsTests, WhenUpdatingGroundBallCollision_ExpectCorrectPositionAndOppos
     Eigen::Vector3f velocity{0, 0, -10};
     float coefficientOfRestitution{1.0};
 
-    physics.add_ball(radius, mass, color, position, velocity, coefficientOfRestitution);
+    BallPhysics physics;
+    physics.set_new_ball_parameters(radius, mass, color, position, velocity, coefficientOfRestitution);
+
+    physics.add_ball();
 
     float deltaTime{0.0};
     physics.update(deltaTime);
@@ -145,8 +151,6 @@ TEST(PhysicsTests, WhenUpdatingGroundBallCollision_ExpectCorrectPositionAndOppos
 
 TEST(PhysicsTests, WhenUpdatingBallCollisionInGround_ExpectRadiusPositionAboveGroundAndOppositeVelocity)
 {
-    BallPhysics physics;
-
     float radius{4};
     float mass{5};
     unsigned int color{128};
@@ -154,7 +158,10 @@ TEST(PhysicsTests, WhenUpdatingBallCollisionInGround_ExpectRadiusPositionAboveGr
     Eigen::Vector3f velocity{0, 0, -10};
     float coefficientOfRestitution{1.0};
 
-    physics.add_ball(radius, mass, color, position, velocity, coefficientOfRestitution);
+    BallPhysics physics;
+    physics.set_new_ball_parameters(radius, mass, color, position, velocity, coefficientOfRestitution);
+
+    physics.add_ball();
 
     float deltaTime{0.0};
     physics.update(deltaTime);
@@ -170,8 +177,6 @@ TEST(PhysicsTests, WhenUpdatingBallCollisionInGround_ExpectRadiusPositionAboveGr
 
 TEST(PhysicsTests, WhenUpdatingBallBelowGround_ExpectRadiusPositionAboveGroundAndOppositeVelocity)
 {
-    BallPhysics physics;
-
     float radius{4};
     float mass{5};
     unsigned int color{128};
@@ -179,7 +184,10 @@ TEST(PhysicsTests, WhenUpdatingBallBelowGround_ExpectRadiusPositionAboveGroundAn
     Eigen::Vector3f velocity{0, 0, -10};
     float coefficientOfRestitution{1.0};
 
-    physics.add_ball(radius, mass, color, position, velocity, coefficientOfRestitution);
+    BallPhysics physics;
+    physics.set_new_ball_parameters(radius, mass, color, position, velocity, coefficientOfRestitution);
+
+    physics.add_ball();
 
     float deltaTime{0.0};
     physics.update(deltaTime);
@@ -195,8 +203,6 @@ TEST(PhysicsTests, WhenUpdatingBallBelowGround_ExpectRadiusPositionAboveGroundAn
 
 TEST(PhysicsTests, WhenUpdatingBallGroundCollisionWithNonTrivialCoefficientOfRestitution_ExpectRadiusPositionAboveGroundAndDepletedOppositeVelocity)
 {
-    BallPhysics physics;
-
     float radius{4};
     float mass{5};
     unsigned int color{128};
@@ -204,7 +210,10 @@ TEST(PhysicsTests, WhenUpdatingBallGroundCollisionWithNonTrivialCoefficientOfRes
     Eigen::Vector3f velocity{0, 0, -10};
     float coefficientOfRestitution{1.0};
 
-    physics.add_ball(radius, mass, color, position, velocity, coefficientOfRestitution);
+    BallPhysics physics;
+    physics.set_new_ball_parameters(radius, mass, color, position, velocity, coefficientOfRestitution);
+
+    physics.add_ball();
 
     float deltaTime{0.0};
     physics.update(deltaTime);
@@ -220,8 +229,6 @@ TEST(PhysicsTests, WhenUpdatingBallGroundCollisionWithNonTrivialCoefficientOfRes
 
 TEST(PhysicsTests, WhenUpdatingBallXWallCollisionWithNonTrivialCoefficientOfRestitution_ExpectRadiusPositionInsideBoxAndDepletedOppositeVelocity)
 {
-    BallPhysics physics;
-
     float radius{4};
     float mass{5};
     unsigned int color{128};
@@ -229,7 +236,10 @@ TEST(PhysicsTests, WhenUpdatingBallXWallCollisionWithNonTrivialCoefficientOfRest
     Eigen::Vector3f velocity{10, 0, 0};
     float coefficientOfRestitution{0.3};
 
-    physics.add_ball(radius, mass, color, position, velocity, coefficientOfRestitution);
+    BallPhysics physics;
+    physics.set_new_ball_parameters(radius, mass, color, position, velocity, coefficientOfRestitution);
+
+    physics.add_ball();
 
     float deltaTime{0.0};
     physics.update(deltaTime);
@@ -245,8 +255,6 @@ TEST(PhysicsTests, WhenUpdatingBallXWallCollisionWithNonTrivialCoefficientOfRest
 
 TEST(PhysicsTests, WhenUpdatingBallYWallCollisionWithNonTrivialCoefficientOfRestitution_ExpectRadiusPositionInsideBoxAndDepletedOppositeVelocity)
 {
-    BallPhysics physics;
-
     float radius{4};
     float mass{5};
     unsigned int color{128};
@@ -254,7 +262,10 @@ TEST(PhysicsTests, WhenUpdatingBallYWallCollisionWithNonTrivialCoefficientOfRest
     Eigen::Vector3f velocity{0, -10, 0};
     float coefficientOfRestitution{0.7};
 
-    physics.add_ball(radius, mass, color, position, velocity, coefficientOfRestitution);
+    BallPhysics physics;
+    physics.set_new_ball_parameters(radius, mass, color, position, velocity, coefficientOfRestitution);
+
+    physics.add_ball();
 
     float deltaTime{0.0};
     physics.update(deltaTime);
@@ -270,8 +281,6 @@ TEST(PhysicsTests, WhenUpdatingBallYWallCollisionWithNonTrivialCoefficientOfRest
 
 TEST(PhysicsTests, WhenUpdatingBalltoBallCollisionWithTrivialCoefficientOfRestitution_ExpectPositionChangeToRadiusAndCorrectVelocity)
 {
-    BallPhysics physics;
-
     float radius1{4};
     float mass1{5};
     unsigned int color1{128};
@@ -279,7 +288,10 @@ TEST(PhysicsTests, WhenUpdatingBalltoBallCollisionWithTrivialCoefficientOfRestit
     Eigen::Vector3f velocity1{0, 10, 0};
     float coefficientOfRestitution1{1.0};
 
-    physics.add_ball(radius1, mass1, color1, position1, velocity1, coefficientOfRestitution1);
+    BallPhysics physics;
+    physics.set_new_ball_parameters(radius1, mass1, color1, position1, velocity1, coefficientOfRestitution1);
+
+    physics.add_ball();
 
     float radius2{5};
     float mass2{2};
@@ -288,7 +300,9 @@ TEST(PhysicsTests, WhenUpdatingBalltoBallCollisionWithTrivialCoefficientOfRestit
     Eigen::Vector3f velocity2{0, -10, 0};
     float coefficientOfRestitution2{1.0};
 
-    physics.add_ball(radius2, mass2, color2, position2, velocity2, coefficientOfRestitution2);
+    physics.set_new_ball_parameters(radius2, mass2, color2, position2, velocity2, coefficientOfRestitution2);
+
+    physics.add_ball();
 
     float deltaTime{0.0};
     physics.update(deltaTime);
@@ -316,8 +330,6 @@ TEST(PhysicsTests, WhenUpdatingBalltoBallCollisionWithTrivialCoefficientOfRestit
 
 TEST(PhysicsTests, WhenUpdatingBalltoBallWithNoCollision_ExpectNoChange)
 {
-    BallPhysics physics;
-
     float radius1{4};
     float mass1{5};
     unsigned int color1{128};
@@ -325,7 +337,10 @@ TEST(PhysicsTests, WhenUpdatingBalltoBallWithNoCollision_ExpectNoChange)
     Eigen::Vector3f velocity1{0, 10, 0};
     float coefficientOfRestitution1{1.0};
 
-    physics.add_ball(radius1, mass1, color1, position1, velocity1, coefficientOfRestitution1);
+    BallPhysics physics;
+    physics.set_new_ball_parameters(radius1, mass1, color1, position1, velocity1, coefficientOfRestitution1);
+
+    physics.add_ball();
 
     float radius2{5};
     float mass2{2};
@@ -334,7 +349,9 @@ TEST(PhysicsTests, WhenUpdatingBalltoBallWithNoCollision_ExpectNoChange)
     Eigen::Vector3f velocity2{0, -10, 0};
     float coefficientOfRestitution2{1.0};
 
-    physics.add_ball(radius2, mass2, color2, position2, velocity2, coefficientOfRestitution2);
+    physics.set_new_ball_parameters(radius2, mass2, color2, position2, velocity2, coefficientOfRestitution2);
+
+    physics.add_ball();
 
     float deltaTime{0.0};
     physics.update(deltaTime);
@@ -357,44 +374,44 @@ TEST(PhysicsTests, WhenUpdatingBalltoBallWithNoCollision_ExpectNoChange)
 
 TEST(PhysicsTests, WhenAddingBalls_ExpectIncreasedBallCount)
 {
-    BallPhysics physics;
-
-    float radius1{4};
-    float mass1{5};
-    unsigned int color1{128};
-    Eigen::Vector3f position1{0, 0, 100};
-    Eigen::Vector3f velocity1{0, 10, 0};
-    float coefficientOfRestitution1{1.0};
+    float radius{4};
+    float mass{5};
+    unsigned int color{128};
+    Eigen::Vector3f position{0, 0, 100};
+    Eigen::Vector3f velocity{0, 10, 0};
+    float coefficientOfRestitution{1.0};
     int numberOfBalls{50};
 
+    BallPhysics physics;
+    physics.set_new_ball_parameters(radius, mass, color, position, velocity, coefficientOfRestitution);
+
     for(int count{0}; count<numberOfBalls; count++)
-        physics.add_ball(radius1, mass1, color1, position1, velocity1, coefficientOfRestitution1);
+        physics.add_ball();
 
     EXPECT_EQ(physics.get_ball_count(), numberOfBalls);
 }
 
 TEST(PhysicsTests, WhenAddingBallsOverMaxLimit_ExpectMaxBallCount)
 {
-    BallPhysics physics;
-
     float radius{4};
     float mass{5};
     unsigned int color{128};
     Eigen::Vector3f position{0, 0, 100};
     Eigen::Vector3f velocity{0, 10, 0};
     float coefficientOfRestitution{1.0};
+
+    BallPhysics physics;
+    physics.set_new_ball_parameters(radius, mass, color, position, velocity, coefficientOfRestitution);
     unsigned int numberOfBalls{physics.get_max_ball_count()+10};
 
     for(int count{0}; count<numberOfBalls; count++)
-        physics.add_ball(radius, mass, color, position, velocity, coefficientOfRestitution);
+        physics.add_ball();
 
     EXPECT_EQ(physics.get_ball_count(), physics.get_max_ball_count());
 }
 
 TEST(PhysicsTests, WhenReplacingBallAtSpecificIndex_ExpectCorrectBallParametersAtIndex)
 {
-    BallPhysics physics;
-
     float radius{4};
     float mass{5};
     unsigned int color{128};
@@ -402,8 +419,11 @@ TEST(PhysicsTests, WhenReplacingBallAtSpecificIndex_ExpectCorrectBallParametersA
     Eigen::Vector3f velocity{0, 10, 0};
     float coefficientOfRestitution{1.0};
 
+    BallPhysics physics;
+    physics.set_new_ball_parameters(radius, mass, color, position, velocity, coefficientOfRestitution);
+
     for(int count{0}; count<physics.get_max_ball_count(); count++)
-        physics.add_ball(radius, mass, color, position, velocity, coefficientOfRestitution);
+        physics.add_ball();
 
     unsigned int replaceIndex{10};
 
@@ -414,7 +434,10 @@ TEST(PhysicsTests, WhenReplacingBallAtSpecificIndex_ExpectCorrectBallParametersA
     Eigen::Vector3f newVelocity{1, 1, 1};
     Eigen::Vector3f newAcceleration{1, 1, 1};
     float newCoefficientOfRestitution{0.5};
-    physics.update_ball(replaceIndex, newRadius, newMass, newColor, newPosition, newVelocity, newAcceleration, newCoefficientOfRestitution);
+
+    physics.set_new_ball_parameters(newRadius, newMass, newColor, newPosition, newVelocity, newCoefficientOfRestitution);
+
+    physics.update_ball(replaceIndex, newAcceleration);
 
     EXPECT_EQ(physics.get_ball_ptr(replaceIndex)->radius, newRadius);
     EXPECT_EQ(physics.get_ball_ptr(replaceIndex)->mass, newMass);
@@ -427,8 +450,6 @@ TEST(PhysicsTests, WhenReplacingBallAtSpecificIndex_ExpectCorrectBallParametersA
 
 TEST(PhysicsTests, WhenAddingBallOverMaxLimit_ExpectCorrectBallReplacement)
 {
-    BallPhysics physics;
-
     float radius1{4};
     float mass1{5};
     unsigned int color1{128};
@@ -446,15 +467,16 @@ TEST(PhysicsTests, WhenAddingBallOverMaxLimit_ExpectCorrectBallReplacement)
     Eigen::Vector3f accelerationExpected{0, 0, -9.81};
 
     int overCount{10};
-    unsigned int numberOfBalls{physics.get_max_ball_count()+overCount};
 
-    for(int count{0}; count<numberOfBalls; count++)
-    {
-        if(count < physics.get_max_ball_count())
-            physics.add_ball(radius1, mass1, color1, position1, velocity1, coefficientOfRestitution1);
-        else
-            physics.add_ball(radius2, mass2, color2, position2, velocity2, coefficientOfRestitution2);
-    }
+    BallPhysics physics;
+    physics.set_new_ball_parameters(radius1, mass1, color1, position1, velocity1, coefficientOfRestitution1);
+
+    for(int count{0}; count<physics.get_max_ball_count(); count++)
+        physics.add_ball();
+
+    physics.set_new_ball_parameters(radius2, mass2, color2, position2, velocity2, coefficientOfRestitution2);
+    for(int count{0}; count<overCount; count++)
+        physics.add_ball();
 
     EXPECT_EQ(physics.get_ball_ptr(overCount-1)->radius, radius2);
     EXPECT_EQ(physics.get_ball_ptr(overCount-1)->mass, mass2);
@@ -478,7 +500,9 @@ TEST(PhysicsTests, WhenBallIsMovingWithFluidDensity_ExpectDampedBallAcceleration
     Eigen::Vector3f velocity{100, 10, -5};
     float coefficientOfRestitution{1.0};
 
-    physics.add_ball(radius, mass, color, position, velocity, coefficientOfRestitution);
+    physics.set_new_ball_parameters(radius, mass, color, position, velocity, coefficientOfRestitution);
+
+    physics.add_ball();
     float deltaTime{0.0};
     physics.update(deltaTime);
 
@@ -504,7 +528,9 @@ TEST(PhysicsTests, WhenBallNotMovingWithFluidDensity_ExpectNoChange)
     Eigen::Vector3f velocity{0, 0, 0};
     float coefficientOfRestitution{1.0};
 
-    physics.add_ball(radius, mass, color, position, velocity, coefficientOfRestitution);
+    physics.set_new_ball_parameters(radius, mass, color, position, velocity, coefficientOfRestitution);
+
+    physics.add_ball();
     float deltaTime{0.0};
     physics.update(deltaTime);
 
@@ -515,8 +541,6 @@ TEST(PhysicsTests, WhenBallNotMovingWithFluidDensity_ExpectNoChange)
 
 TEST(PhysicsTests, WhenRemovingBall_ExpectReducedBallCount)
 {
-    BallPhysics physics{BallPhysics()};
-
     float radius{4};
     float mass{5};
     unsigned int color{128};
@@ -524,9 +548,12 @@ TEST(PhysicsTests, WhenRemovingBall_ExpectReducedBallCount)
     Eigen::Vector3f velocity{0, 0, 0};
     float coefficientOfRestitution{1.0};
 
+    BallPhysics physics;
+    physics.set_new_ball_parameters(radius, mass, color, position, velocity, coefficientOfRestitution);
+
     int numberOfBallsToAdd{20};
     for(int ballNumber{0}; ballNumber<numberOfBallsToAdd; ballNumber++)
-        physics.add_ball(radius, mass, color, position, velocity, coefficientOfRestitution);
+        physics.add_ball();
     physics.remove_ball();
 
     EXPECT_EQ(physics.get_ball_count(), numberOfBallsToAdd-1);
@@ -552,8 +579,6 @@ TEST(PhysicsTests, WhenRemovingBallWhenNoBalls_ExpectNoBalls)
 
 TEST(PhysicsTests, WhenClearingBalls_ExpectNoBalls)
 {
-    BallPhysics physics{BallPhysics()};
-
     float radius{4};
     float mass{5};
     unsigned int color{128};
@@ -561,9 +586,12 @@ TEST(PhysicsTests, WhenClearingBalls_ExpectNoBalls)
     Eigen::Vector3f velocity{0, 0, 0};
     float coefficientOfRestitution{1.0};
 
+    BallPhysics physics;
+    physics.set_new_ball_parameters(radius, mass, color, position, velocity, coefficientOfRestitution);
+
     int numberOfBallsToAdd{20};
     for(int ballNumber{0}; ballNumber<numberOfBallsToAdd; ballNumber++)
-        physics.add_ball(radius, mass, color, position, velocity, coefficientOfRestitution);
+        physics.add_ball();
     physics.clear_balls();
 
     EXPECT_EQ(physics.get_ball_count(), 0);
@@ -575,5 +603,4 @@ TEST(PhysicsTests, WhenClearingNoBalls_ExpectNoBallsAndNoCount)
     physics.clear_balls();
 
     EXPECT_EQ(physics.get_ball_count(), 0);
-//    EXPECT_EQ(physics.balls.size(), 0);
 }

@@ -41,7 +41,6 @@ public:
   virtual ~OSGWidget();
 
   void add_ball();
-  void replace_ball();
   void clear_balls();
   void update_ball_update_rate();
   void update_nozzle();
@@ -64,8 +63,7 @@ public:
   void set_radius(float newRadius);
   void set_mass(float newMass);
   void set_color(unsigned int newColor);
-  void set_position(Eigen::Vector3f newPosition);
-  void set_velocity(float newVelocity);
+  void set_velocity(float newUpwardVelocity);
   void set_coefficient_of_restitution(float newCoefficient);
   void set_ball_rate(float newRate);
   void set_pause_flag(bool pauseState);
@@ -85,17 +83,11 @@ protected:
   void add_ground_plane();
   void configure_update();
 
-  float groundPlaneSize{10};
-  float fluidDensity{0.5};
-  BallPhysics physics{BallPhysics(groundPlaneSize, fluidDensity)};
+  float initialGroundPlaneSize{10};
+  float initialFluidDensity{0.5};
+  BallPhysics physics{BallPhysics(initialGroundPlaneSize, initialFluidDensity)};
   float fountainHeightScale{3.0};
 
-  float radius{0.5};
-  float mass{5};
-  unsigned int color{0};
-  Eigen::Vector3f position{0.0, 0.0, 0.0};
-  Eigen::Vector3f velocity{0.0, 0.0, 20.0};
-  float coefficientOfRestitution{0.7};
   float ballsPerSecond{5.0};
   bool pauseFlag{true};
 

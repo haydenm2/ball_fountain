@@ -12,9 +12,9 @@ class BallPhysics
 public:
     BallPhysics(float boxBoundSizeInput=30, float fluidDensityInput=0, float gravityInput=-9.81);
 
-    void add_ball(float &radius, float &mass, unsigned int &color, Eigen::Vector3f &position, Eigen::Vector3f &velocity, float &coefficientOfRestitution);
+    void add_ball();
+    void update_ball(unsigned int &index, Eigen::Vector3f &newBallAcceleration);
     void update(float deltaTime);
-    void update_ball(unsigned int &index, float &radius, float &mass, unsigned int &color, Eigen::Vector3f &position, Eigen::Vector3f &velocity, Eigen::Vector3f &acceleration, float &coefficientOfRestitution);
     void remove_ball();
     void clear_balls();
 
@@ -32,6 +32,21 @@ public:
     void set_drag_coefficient(float newCoefficient);
     void set_fluid_density(float newDensity);
 
+    float get_new_ball_radius();
+    float get_new_ball_mass();
+    unsigned int get_new_ball_color();
+    Eigen::Vector3f get_new_ball_position();
+    Eigen::Vector3f get_new_ball_velocity();
+    float get_new_ball_coefficient_of_restitution();
+
+    void set_new_ball_parameters(float newRadius, float newMass, unsigned int newColor, Eigen::Vector3f newPosition, Eigen::Vector3f newVelocity, float newCoefficient);
+    void set_new_ball_radius(float newRadius);
+    void set_new_ball_mass(float newMass);
+    void set_new_ball_color(unsigned int newColor);
+    void set_new_ball_height(float newHeight);
+    void set_new_ball_velocity(Eigen::Vector3f newVelocity);
+    void set_new_ball_coefficient_of_restitution(float newCoefficient);
+
 protected:
     std::vector<Ball> balls;
     unsigned int ballReplaceIndex{0};
@@ -41,6 +56,13 @@ protected:
     float boxBoundSize{30};
     float dragCoefficient{0.5};
     float fluidDensity{0};
+
+    float newBallRadius{0.5};
+    float newBallMass{5};
+    unsigned int newBallColor{0};
+    Eigen::Vector3f newBallPosition{0.0, 0.0, 0.0};
+    Eigen::Vector3f newBallVelocity{0.0, 0.0, 20.0};
+    float newBallCoefficientOfRestitution{0.7};
 
 private:
     void update_box_collisions(Ball &ball);

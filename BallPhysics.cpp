@@ -5,23 +5,23 @@ BallPhysics::BallPhysics(float boxBoundSizeInput, float fluidDensityInput, float
 {
 }
 
-void BallPhysics::add_ball(float &radius, float &mass, unsigned int &color, Eigen::Vector3f &position, Eigen::Vector3f &velocity, float &coefficientOfRestitution)
+void BallPhysics::add_ball()
 {
-    float velocityMagnitude{velocity.norm()};
+    float velocityMagnitude{newBallVelocity.norm()};
     Eigen::Vector3f dragForce{Eigen::Vector3f{0.0, 0.0, 0.0}};
     if(velocityMagnitude > 0)
-        dragForce = -(0.5*fluidDensity*pow(velocityMagnitude, 2)*dragCoefficient*(M_PI*pow(radius, 2)))/mass*velocity/velocityMagnitude;
+        dragForce = -(0.5*fluidDensity*pow(velocityMagnitude, 2)*dragCoefficient*(M_PI*pow(newBallRadius, 2)))/newBallMass*newBallVelocity/velocityMagnitude;
 
-    Eigen::Vector3f acceleration{Eigen::Vector3f{0.0, 0.0, gravity} + dragForce};
+    Eigen::Vector3f newBallAcceleration{Eigen::Vector3f{0.0, 0.0, gravity} + dragForce};
     if(ballCount < maxBallCount)
     {
-        Ball newBall(radius, mass, color, position, velocity, acceleration, coefficientOfRestitution);
+        Ball newBall(newBallRadius, newBallMass, newBallColor, newBallPosition, newBallVelocity, newBallAcceleration, newBallCoefficientOfRestitution);
         this->balls.push_back(newBall);
         this->ballCount++;
     }
     else
     {
-        update_ball(ballReplaceIndex, radius, mass, color, position, velocity, acceleration, coefficientOfRestitution);
+        update_ball(ballReplaceIndex, newBallAcceleration);
         if(ballReplaceIndex < maxBallCount)
             ballReplaceIndex++;
         else
@@ -46,17 +46,17 @@ void BallPhysics::update(float deltaTime)
     }
 }
 
-void BallPhysics::update_ball(unsigned int &index, float &radius, float &mass, unsigned int &color, Eigen::Vector3f &position, Eigen::Vector3f &velocity, Eigen::Vector3f &acceleration, float &coefficientOfRestitution)
+void BallPhysics::update_ball(unsigned int &index, Eigen::Vector3f &newBallAcceleration)
 {
     if(this->ballCount >= index)
     {
-        this->balls[index].radius = radius;
-        this->balls[index].mass = mass;
-        this->balls[index].color = color;
-        this->balls[index].position = position;
-        this->balls[index].velocity = velocity;
-        this->balls[index].acceleration = acceleration;
-        this->balls[index].coefficientOfRestitution = coefficientOfRestitution;
+        this->balls[index].radius = newBallRadius;
+        this->balls[index].mass = newBallMass;
+        this->balls[index].color = newBallColor;
+        this->balls[index].position = newBallPosition;
+        this->balls[index].velocity = newBallVelocity;
+        this->balls[index].acceleration = newBallAcceleration;
+        this->balls[index].coefficientOfRestitution = newBallCoefficientOfRestitution;
     }
 }
 
@@ -169,4 +169,75 @@ void BallPhysics::set_fluid_density(float newDensity)
 {
     this->fluidDensity = newDensity;
 }
+
+float BallPhysics::get_new_ball_radius()
+{
+    return this->newBallRadius;
+}
+
+float BallPhysics::get_new_ball_mass()
+{
+    return this->newBallMass;
+}
+
+unsigned int BallPhysics::get_new_ball_color()
+{
+    return this->newBallColor;
+}
+
+Eigen::Vector3f BallPhysics::get_new_ball_position()
+{
+    return this->newBallPosition;
+}
+
+Eigen::Vector3f BallPhysics::get_new_ball_velocity()
+{
+    return this->newBallVelocity;
+}
+
+float BallPhysics::get_new_ball_coefficient_of_restitution()
+{
+    return this->newBallCoefficientOfRestitution;
+}
+
+void BallPhysics::set_new_ball_parameters(float newRadius, float newMass, unsigned int newColor, Eigen::Vector3f newPosition, Eigen::Vector3f newVelocity, float newCoefficient)
+{
+    this->newBallRadius = newRadius;
+    this->newBallMass = newMass;
+    this->newBallColor = newColor;
+    this->newBallPosition = newPosition;
+    this->newBallVelocity = newVelocity;
+    this->newBallCoefficientOfRestitution = newCoefficient;
+}
+
+void BallPhysics::set_new_ball_radius(float newRadius)
+{
+    this->newBallRadius = newRadius;
+}
+
+void BallPhysics::set_new_ball_mass(float newMass)
+{
+    this->newBallMass = newMass;
+}
+
+void BallPhysics::set_new_ball_color(unsigned int newColor)
+{
+    this->newBallColor = newColor;
+}
+
+void BallPhysics::set_new_ball_height(float newHeight)
+{
+    this->newBallPosition[2] = newHeight;
+}
+
+void BallPhysics::set_new_ball_velocity(Eigen::Vector3f newVelocity)
+{
+    this->newBallVelocity = newVelocity;
+}
+
+void BallPhysics::set_new_ball_coefficient_of_restitution(float newCoefficient)
+{
+    this->newBallCoefficientOfRestitution = newCoefficient;
+}
+
 
