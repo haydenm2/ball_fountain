@@ -33,15 +33,11 @@ void OSGWidget::timerEvent(QTimerEvent *event)
     if(!pauseFlag)
     {
         if(event->timerId() == simulationUpdateTimerId)
-        {
             physics.update(1/framesPerSecond);
-            update();
-        }
         else if(event->timerId() == ballUpdateTimerId)
-        {
             add_ball();
-        }
     }
+    update();
 }
 
 void OSGWidget::paintEvent(QPaintEvent* /* paintEvent */)
@@ -72,6 +68,89 @@ void OSGWidget::on_resize(int width, int height)
     mViewer->getCameras(cameras);
     auto pixelRatio = this->devicePixelRatio();
     cameras[0]->setViewport(0, 0, width * pixelRatio, height * pixelRatio);
+}
+
+void OSGWidget::keyPressEvent(QKeyEvent* event)
+{
+    QString keyString = event->text();
+    const char* keyData = keyString.toLocal8Bit().data();
+    this->getEventQueue()->keyPress(osgGA::GUIEventAdapter::KeySymbol(*keyData));
+}
+
+void OSGWidget::keyReleaseEvent(QKeyEvent* event)
+{
+    QString keyString = event->text();
+    const char* keyData = keyString.toLocal8Bit().data();
+    this->getEventQueue()->keyRelease(osgGA::GUIEventAdapter::KeySymbol(*keyData));
+}
+
+void OSGWidget::mouseMoveEvent(QMouseEvent* event)
+{
+    auto pixelRatio = this->devicePixelRatio();
+    this->getEventQueue()->mouseMotion(static_cast<float>(event->x()*pixelRatio),
+                                       static_cast<float>(event->y()*pixelRatio));
+}
+
+void OSGWidget::mousePressEvent(QMouseEvent* event)
+{
+    auto pixelRatio = this->devicePixelRatio();
+    unsigned int button = 0;
+
+        switch(event->button())
+        {
+        case Qt::LeftButton:
+            button = 1;
+            break;
+
+        case Qt::MiddleButton:
+            button = 2;
+            break;
+
+        case Qt::RightButton:
+            button = 3;
+            break;
+
+        default:
+            break;
+        }
+    this->getEventQueue()->mouseButtonPress(static_cast<float>( event->x() * pixelRatio),
+                                            static_cast<float>( event->y() * pixelRatio),
+                                            button);
+}
+
+void OSGWidget::mouseReleaseEvent(QMouseEvent* event)
+{
+    auto pixelRatio = this->devicePixelRatio();
+    unsigned int button = 0;
+
+        switch(event->button())
+        {
+        case Qt::LeftButton:
+            button = 1;
+            break;
+
+        case Qt::MiddleButton:
+            button = 2;
+            break;
+
+        case Qt::RightButton:
+            button = 3;
+            break;
+
+        default:
+            break;
+        }
+    this->getEventQueue()->mouseButtonRelease(static_cast<float>(pixelRatio*event->x()),
+                                              static_cast<float>(pixelRatio*event->y()),
+                                              button);
+}
+
+void OSGWidget::wheelEvent(QWheelEvent* event)
+{
+    event->accept();
+    int delta = event->delta();
+    osgGA::GUIEventAdapter::ScrollingMotion motion = delta > 0 ? osgGA::GUIEventAdapter::SCROLL_UP : osgGA::GUIEventAdapter::SCROLL_DOWN;
+    this->getEventQueue()->mouseScroll(motion);
 }
 
 osgGA::EventQueue* OSGWidget::getEventQueue() const
