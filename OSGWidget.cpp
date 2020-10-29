@@ -388,7 +388,7 @@ void OSGWidget::set_gravity(float newGravity)
 void OSGWidget::set_radius(float newRadius)
 {
     this->physics.set_new_ball_radius(newRadius);
-    this->physics.set_new_ball_height(fountainHeightScale*physics.get_new_ball_radius());
+    this->physics.set_new_ball_position(Eigen::Vector3f(0.0, 0.0, fountainHeightScale*physics.get_new_ball_radius()));
 }
 
 void OSGWidget::set_mass(float newMass)

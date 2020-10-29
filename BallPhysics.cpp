@@ -225,9 +225,9 @@ void BallPhysics::set_new_ball_color(unsigned int newColor)
     this->newBallColor = newColor;
 }
 
-void BallPhysics::set_new_ball_height(float newHeight)
+void BallPhysics::set_new_ball_position(Eigen::Vector3f newPosition)
 {
-    this->newBallPosition[2] = newHeight;
+    this->newBallPosition = newPosition;
 }
 
 void BallPhysics::set_new_ball_velocity(Eigen::Vector3f newVelocity)

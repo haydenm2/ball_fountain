@@ -43,7 +43,7 @@ public:
     void set_new_ball_radius(float newRadius);
     void set_new_ball_mass(float newMass);
     void set_new_ball_color(unsigned int newColor);
-    void set_new_ball_height(float newHeight);
+    void set_new_ball_position(Eigen::Vector3f newPosition);
     void set_new_ball_velocity(Eigen::Vector3f newVelocity);
     void set_new_ball_coefficient_of_restitution(float newCoefficient);
 
