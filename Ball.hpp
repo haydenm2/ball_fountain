@@ -5,9 +5,8 @@
 #include <eigen3/Eigen/Dense>
 
 
-class Ball
+struct Ball
 {
-public:
     Ball();
     Ball(float radius, float mass, unsigned int color, Eigen::Vector3f position, Eigen::Vector3f velocity, Eigen::Vector3f acceleration, float coefficientOfRestitution);
     float radius{1};

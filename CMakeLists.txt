@@ -9,7 +9,6 @@ find_package(Eigen3 3.3 REQUIRED)
 
 include_directories(${GTEST_INCLUDE_DIRS})
 include_directories(${OPENSCENEGRAPH_INCLUDE_DIRS})
-include_directories(${OSGQOPENGL_INCLUDE_DIRS})
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED 1)
